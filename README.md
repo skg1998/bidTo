@@ -1,1 +1,3 @@
-# bidTo
+# BidTo
+
+> Online Bidding site
