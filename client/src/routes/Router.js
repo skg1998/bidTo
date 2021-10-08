@@ -8,7 +8,7 @@ import AdminLayout from "../layouts/AdminLayout";
 /*****Pages******/
 //Main-Layout
 import Home from "../views/Home";
-import Products from "../views/Products";
+import Products from "../views/Products/Products";
 import Login from "../views/Login";
 import Signup from "../views/Signup";
 import ForgotPassword from "../views/ForgotPassword";
