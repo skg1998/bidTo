@@ -1,0 +1,14 @@
+{
+  "swaggerDefinition": {
+    "openapi": "3.0.0",
+    "info": {
+      "title": "My BidTo API",
+      "description": "Api for BidTo Project",
+      "version": "1.0.0"
+    },
+    "host": "localhost:5000",
+    "basePath": "/api/v1",
+    "schemes": ["http", "https"]
+  },
+  "apis": ["./src/routes/*.js"]
+}
