@@ -11,7 +11,7 @@ const {
     resetPassword
 } = require("../controllers/User.controller");
 
-const { hasAuthentication } = require('../middleware/hasAuth')
+const { hasAuthenticate } = require('../middleware/hasAuth')
 
 const router = express.Router();
 
@@ -55,7 +55,6 @@ router.get("/:id", userByID);
  * /users/signup:
  *  post:
  *    tags: [User]
- *    summary: create a user account
  *    description: Use to create a user account
  *    produces:
  *      - application/json
@@ -132,7 +131,7 @@ router.get('/logout', logout);
  *       200:
  *         description: Fetch User Profile Sucessfully
  */
-router.get('/myProfile', hasAuthentication, getMyProfile);
+router.get('/myProfile', hasAuthenticate, getMyProfile);
 
 /**
  * @swagger
@@ -159,7 +158,7 @@ router.get('/myProfile', hasAuthentication, getMyProfile);
  *         schema:
  *           $ref: '#/definitions/Users'
  */
-router.put('/:id', hasAuthentication, update);
+router.put('/:id', hasAuthenticate, update);
 
 /**
  * @swagger
@@ -186,14 +185,13 @@ router.put('/:id', hasAuthentication, update);
  *         schema:
  *           $ref: '#/definitions/Users'
  */
-router.delete('/:id', hasAuthentication, remove);
+router.delete('/:id', hasAuthenticate, remove);
 
 /**
  * @swagger
  * /users/forgotPassword:
  *  post:
  *    tags: [User]
- *    summary: Forget Password
  *    description: Forget Password
  *    produces:
  *      - application/json
