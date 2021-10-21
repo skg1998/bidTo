@@ -6,17 +6,16 @@ const useStyle = makeStyles((theme)=>({
     bidTime:{
         height:'20%',
         width:'100%',
-        borderRadius: '5px',
+        borderRadius: '5%',
         border:'2px solid black ',
         opacity:'0.3',
-        padding:'0.2rem ',
+        padding:'0.5%',
+        margin:'0.3%',
         Color:'#000000',
         display:'grid',
         gridAutoFlow:'column',
-        gridColumnGap:'2px'
-        // justifyContent:'space-around',
+        wordWrap:'break-word'
         
-        // wordSpacing:'5rem'
     },
 }));
  const BidTimeTag=()=>{

@@ -15,7 +15,7 @@ const useStyle = makeStyles((theme)=>({
         height:'20%',
         width:'80%',
         margin:'80px auto 30px',
-        padding:'50px'
+        // padding:'50px'
     },
     items:{
         display:'flex',
