@@ -24,7 +24,21 @@ const useStyles = makeStyles((theme) => createStyles({
             height: '100%',
             width: '100%'
         },
+        '.dropzone': {
+            textAlign: 'center',
+            padding: '20px',
+            border: '3px dashed #eeeeee',
+            backgroundColor: '#fafafa',
+            color: '#bdbdbd',
 
+            marginBottom: '20px',
+        },
+        '.accept': {
+            borderColor: '#107c10 !important'
+        },
+        '.reject': {
+            borderColor: '#d83b01 !important'
+        }
     }
 }));
 

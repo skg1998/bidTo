@@ -16,7 +16,7 @@ import Error404 from "../views/404";
 
 //Admin-Layout
 import Dashboard from "../views/Dashboard/Dashboard";
-import ScheduleBidding from "../views/Dashboard/ScheduleBidding";
+import ScheduleBidding from "../views/Dashboard/ScheduleBidding/ScheduleBidding";
 import DataTable from "../views/Dashboard/BiddingTable";
 import ProfilePage from "../views/Dashboard/Profile";
 /***** End Pages ******/
