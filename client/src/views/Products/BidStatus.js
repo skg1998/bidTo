@@ -4,37 +4,33 @@ import React from 'react';
 
 const useStyle = makeStyles((theme)=>({
     BidStatus:{
-        height:'40%',
+        height:'60%',
         width:'100%',
-        borderRadius: '5px',
+        margin:'0.5%',
         border:'2px solid grey ',
-        // opacity:'0.4',
-        // padding:'0.2rem ',
         Color:'#000000',
         display:'flex',
-        flexDirection:'row'        ,
-        justifyContent:'space-around',
-        
-        // wordSpacing:'5rem'
+        flexDirection:'row',
+        wordWrap:'break-word',
+        color:'#324425',
     },
     HighBid:{
         display:'flex',
         flexDirection:'column',
-        padding:'0.8rem',
-        width:'100%',
+      
+        width:'53%',
         height:'100%',
-        backgroundColor:'#e0bebe',
-        borderRight:'2px solid grey '
+        backgroundColor:'#fff3eb',
+        borderRight:'1px solid grey ',
+        padding:'3%',
     },
     YourBid:{
         display:'flex',
         flexDirection:'column',
-        padding:'0.8rem',
-        width:'100%',
+        padding:'3%',
+        width:'47%',
         height:'100%',
-        backgroundColor:'#98e0a3',
-        
-      
+        backgroundColor:'#f4ffee',
     }
 }));
  const BidStatus=()=>{
@@ -44,12 +40,12 @@ const useStyle = makeStyles((theme)=>({
         <div className={classes.BidStatus}>
            
             <div className={classes.HighBid}>
-                <h3>Highest Bid</h3>
-                <h2 style={{color:'crimson'}}>Price</h2>
+                <div>Highest Bid</div>
+                <div style={{color:'#b16b45'}}>Price</div>
             </div>
             <div className ={classes.YourBid}>
-                <h3>Your Bid</h3>
-                <h2 style={{color:'crimson'}}>Price</h2>
+                <div>Your Bid</div>
+                <div style={{color:'#60c059'}}>Price</div>
             </div>
             <div></div>
         </div>
