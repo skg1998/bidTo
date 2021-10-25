@@ -2,7 +2,7 @@ import { HourglassEmptyTwoTone } from "@material-ui/icons";
 import { mergeClasses } from "@material-ui/styles";
 import { Button, makeStyles,Card,Paper } from "@material-ui/core";
 import React from "react";
-import HighestBid from "./HighestBid";
+
 
 const useStyle = makeStyles((theme) => ({
   item: {
