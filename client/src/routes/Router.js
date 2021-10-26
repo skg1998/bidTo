@@ -10,11 +10,11 @@ import AdminLayout from "../layouts/AdminLayout";
 import Home from "../views/Home";
 import BidCheckoutDetail from "../views/BidCheckout/BidCheckoutDetail";
 import Products from "../views/Products/Products";
+import Product from "../views/Product/Product";
 import Login from "../views/Login";
 import Signup from "../views/Signup";
 import ForgotPassword from "../views/ForgotPassword";
 import Error404 from "../views/404";
-
 
 //Admin-Layout
 import Dashboard from "../views/Dashboard/Dashboard";
@@ -56,11 +56,10 @@ const MainRouter = () => {
 			<Switch>
 				<MainRoute exact path="/" component={Home} />
 				<MainRoute path="/products" component={Products} />
-				<MainRoute path="/checkout" component={BidCheckoutDetail} />
-				
+				<MainRoute path="/product/:id" component={Product} />
+				<MainRoute path="/cart" component={BidCheckoutDetail} />
 				<MainRoute path="/login" component={Login} />
 				<MainRoute path="/signup" component={Signup} />
-				
 				<MainRoute path="/forgot-password" component={ForgotPassword} />
 
 				<DashboardRoute exact path="/dashboard" component={Dashboard} />

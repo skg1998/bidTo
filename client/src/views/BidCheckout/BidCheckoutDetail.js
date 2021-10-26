@@ -1,8 +1,7 @@
 import { HourglassEmptyTwoTone } from "@material-ui/icons";
 import { mergeClasses } from "@material-ui/styles";
-import { Button, makeStyles,Card,Paper } from "@material-ui/core";
+import { Button, makeStyles, Card, Paper } from "@material-ui/core";
 import React from "react";
-import HighestBid from "./HighestBid";
 
 const useStyle = makeStyles((theme) => ({
   item: {
@@ -55,16 +54,16 @@ const useStyle = makeStyles((theme) => ({
     color: "green",
     fontWeight: "bold",
   },
-  checkoutDetail:{
+  checkoutDetail: {
     marginLeft: "20px",
     marginRight: "20px",
     // border: "2px solid",
     marginTop: "20px",
   },
-  list:{
+  list: {
 
   },
-  listBox:{
+  listBox: {
     margin: "10px",
   },
 
@@ -73,80 +72,80 @@ const useStyle = makeStyles((theme) => ({
 const BidCheckoutDetail = () => {
   const classes = useStyle();
   var date = new Date();
-  var data=189;
+  var data = 189;
   return (
-     <div>
+    <div>
 
-<div className={classes.item}>
-      <div className={classes.itemDetail}>
-        <img
-          style={{ borderRadius: "10rem" }}
-          src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSFHIKKZMvnXjX49V7dTOaOUgVsyHovcia0Bu4p6w6bIQ4X7dUzdMd8OWekFAHq-FAn03TdcPPCz5zeg5qArzc9QHcZ2UplHA&usqp=CAY"
-          alt=""
-        ></img>
-        <div className={classes.itemStatus}>
-          <h3>Egyptian Pair Shoes</h3>
-          <span style={{ color: "grey"}}>Description: 2 pair of Ancuent Show</span>
-          <Button className={classes.button} variant="outlined">
-            Checkout
-          </Button>
+      <div className={classes.item}>
+        <div className={classes.itemDetail}>
+          <img
+            style={{ borderRadius: "10rem" }}
+            src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSFHIKKZMvnXjX49V7dTOaOUgVsyHovcia0Bu4p6w6bIQ4X7dUzdMd8OWekFAHq-FAn03TdcPPCz5zeg5qArzc9QHcZ2UplHA&usqp=CAY"
+            alt=""
+          ></img>
+          <div className={classes.itemStatus}>
+            <h3>Egyptian Pair Shoes</h3>
+            <span style={{ color: "grey" }}>Description: 2 pair of Ancuent Show</span>
+            <Button className={classes.button} variant="outlined">
+              Checkout
+            </Button>
+          </div>
         </div>
+        <div className={classes.bidDetail}>
+          <h4 style={{ color: "green" }}>Bid Won on </h4>
+          <h5>19/10/2021 </h5>
+          <h6>3 PM</h6>
+          <h6>Highest Bid: RS 400000</h6>
+        </div>
+
+
       </div>
-      <div className={classes.bidDetail}>
-        <h4 style={{ color: "green" }}>Bid Won on </h4>
-        <h5>19/10/2021 </h5>
-        <h6>3 PM</h6>
-        <h6>Highest Bid: RS 400000</h6>
+      <div className={classes.checkoutDetail} >
+        <h2>Listing Details</h2>
+        <div className={classes.list}>
+          <ul>
+            <li className={classes.listBox}>
+              <div>
+                <img src="https://img.icons8.com/ultraviolet/40/000000/money--v1.png"></img>
+
+                <h4>Initial Amount</h4>
+                <p>20,000</p>
+              </div>
+            </li>
+            <li className={classes.listBox}>
+              <div>
+                <img src="https://img.icons8.com/office/16/000000/worldwide-location--v1.png"></img>
+
+                <h4>Location</h4>
+                <p>Los Angeles, USA  </p>
+              </div>
+            </li>
+            <li className={classes.listBox}>
+              <div >
+                <img src="https://img.icons8.com/ios/50/000000/weight.png" />
+                <h4>Weight</h4>
+                <p>4kg</p>
+              </div>
+            </li>
+            <li className={classes.listBox}>
+              <div >
+                <img src="https://img.icons8.com/office/16/000000/details-pane.png" />
+                <h4>Other Details</h4>
+                <p>A unique glossy waxy layet Leather Sghow specially made in USA </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <ul>
+
+        </ul>
+
       </div>
-      
+
+
 
     </div>
-    <div className={classes.checkoutDetail} >
-      <h2>Listing Details</h2>
-      <div className={classes.list}>
-         <ul>
-         <li className={classes.listBox}>
-             <div>
-               <img src="https://img.icons8.com/ultraviolet/40/000000/money--v1.png"></img>
-
-               <h4>Initial Amount</h4>
-               <p>20,000</p>
-             </div>
-           </li>
-           <li className={classes.listBox}>
-             <div>
-               <img src="https://img.icons8.com/office/16/000000/worldwide-location--v1.png"></img>
-
-               <h4>Location</h4>
-               <p>Los Angeles, USA  </p>
-             </div>
-           </li>
-           <li className={classes.listBox}>
-             <div >
-             <img src="https://img.icons8.com/ios/50/000000/weight.png"/>
-               <h4>Weight</h4>
-               <p>4kg</p>
-             </div>
-           </li>
-           <li className={classes.listBox}>
-             <div >
-             <img src="https://img.icons8.com/office/16/000000/details-pane.png"/>
-               <h4>Other Details</h4>
-               <p>A unique glossy waxy layet Leather Sghow specially made in USA </p>
-             </div>
-           </li>
-         </ul>
-      </div>
-  
-    <ul>
-      
-    </ul>
-
-   </div>
-
-
-
-     </div>
   );
 };
 export default BidCheckoutDetail;
