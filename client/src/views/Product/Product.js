@@ -10,6 +10,8 @@ import BarContainer from './chartContainers.js/BarContainer';
 import BidInfo from './BidInfo';
 import BidHistory from './BidHistory';
 import BidQuery from './BidQuery';
+import BidStatus from '../Products/BidStatus';
+import BidTimeTag from '../Products/BidTimeTag';
 
 const product = {
   "_id": "1",
@@ -70,6 +72,8 @@ const Product = () => {
         <Grid item lg={8} sm={12} xl={8} xs={12}>
           <div className={classes.productDetail}>
             <div className={classes.container}>
+              <BidStatus/>
+              <BidTimeTag/>
               <div style={{ fontWeight: 'bold' }}>
                 {product.title}
               </div>
