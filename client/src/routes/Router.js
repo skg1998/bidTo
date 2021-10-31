@@ -11,6 +11,7 @@ import Home from "../views/Home";
 import BidCheckoutDetail from "../views/BidCheckout/BidCheckoutDetail";
 
 import About from "../views/HomeComponet/About";
+
 import Products from "../views/Products/Products";
 import Login from "../views/Login";
 import Signup from "../views/Signup";
@@ -64,7 +65,8 @@ const MainRouter = () => {
 				<MainRoute path="/signup" component={Signup} />
 				
 				<MainRoute path="/forgot-password" component={ForgotPassword} />
-				<MainRoute path="/home/about" component={About} />
+				
+				<MainRoute path="/about" component={About} />
 
 				<DashboardRoute exact path="/dashboard" component={Dashboard} />
 				<DashboardRoute path="/dashboard/schedulebidding" component={ScheduleBidding} />
