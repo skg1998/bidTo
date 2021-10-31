@@ -8,13 +8,18 @@ function About(props) {
   return (
     <div>
       <Navbar></Navbar>
+      {/* <div className="Tittle">
+        <h2>{props.title} BID TO</h2>
+      </div> */}
+   
       <div id="about">
+      
         <div className="about-image">
           {/* <img src={props.image} alt="" /> */}
-          <img src={about} />
+          <img src="https://savvyrevenue.com/wp-content/uploads/2021/04/Google_Ads_auction.png"/>   
         </div>
         <div className="about-text">
-          <h2>{props.title} BID TO</h2>
+        <h2>{props.title}About BidTo</h2>
           <p>
             Welcome to ‘BidTo’ one of the best online auction platforms in
             India. <br></br>We provide our stakeholders to make their bid and
@@ -23,12 +28,16 @@ function About(props) {
             make bid on products from authorized people.
             <br></br>We are not limited to new products but also ‘BidTo’ gives
             an opportunity to buy an ancient, unique and creative products.
+            We exist to enable economic opportunity for individuals, entrepreneurs, businesses and organizations of all sizes.
           </p>
           {/* <button>{props.button}</button> */}
         </div>
       </div>
-
+        <div className="why-choose">
+        <h2>{props.title} Why choose us?</h2>
+      </div>
       <div id="buy-sell">
+
         <div className="about-text">
           <h2>Buyers</h2>
           <div style={{ display: "flex", "margin-top":"10px"}}>
