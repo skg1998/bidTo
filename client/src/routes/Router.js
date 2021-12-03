@@ -7,16 +7,17 @@ import AdminLayout from "../layouts/AdminLayout";
 
 /*****Pages******/
 //Main-Layout
-import Home from "../views/Home";
-import BidCheckoutDetail from "../views/BidCheckout/BidCheckoutDetail";
-
-import About from "../views/HomeComponet/About";
+import Home from "../views/Home/Home";
+import BidCheckoutDetail from "../views/Checkout/BidCheckoutDetail";
+import Order from '../views/Order/order'
+import WishList from '../views/WishList/wishList';
+import About from "../views/Home/About";
 import Products from "../views/Products/Products";
 import Product from "../views/Product/Product";
-import Login from "../views/Login";
-import Signup from "../views/Signup";
-import ForgotPassword from "../views/ForgotPassword";
-import Error404 from "../views/404";
+import Login from "../views/Auth/Login";
+import Signup from "../views/Auth/Signup";
+import ForgotPassword from "../views/Auth/ForgotPassword";
+import Error404 from "../views/Error/404";
 
 //Admin-Layout
 import Dashboard from "../views/Dashboard/Dashboard";
@@ -63,7 +64,9 @@ const MainRouter = () => {
 				<MainRoute path="/login" component={Login} />
 				<MainRoute path="/signup" component={Signup} />
 				<MainRoute path="/forgot-password" component={ForgotPassword} />
-				<MainRoute path="/home/about" component={About} />
+				<MainRoute path="/about" component={About} />
+				<MainRoute path="/orders" component={Order} />
+				<MainRoute path="/wishlist" component={WishList} />
 
 				<DashboardRoute exact path="/dashboard" component={Dashboard} />
 				<DashboardRoute path="/dashboard/schedulebidding" component={ScheduleBidding} />

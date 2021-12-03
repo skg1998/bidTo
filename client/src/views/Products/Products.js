@@ -1,74 +1,60 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core';
-import Navbar from '../HomeComponet/Navbar';
-import ProductItem from '../Products/ProductItem'
+import React, { useState, useEffect } from 'react';
+import { makeStyles, Grid } from '@material-ui/core';
+import Navbar from '../Home/Navbar';
+import ProductItem from '../Products/ProductItem';
+import Filter from '../../components/Filters/Filters';
+import Empty from '../../components/Empty/Empty'
+//redux store
+import { connect } from 'react-redux'
+import { getAllProducts } from '../../store/reducers/productReducer';
 
-const products = [
-    {
-        id: 1,
-        name: "Product Name",
-        desc: "full product description",
-        image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSFHIKKZMvnXjX49V7dTOaOUgVsyHovcia0Bu4p6w6bIQ4X7dUzdMd8OWekFAHq-FAn03TdcPPCz5zeg5qArzc9QHcZ2UplHA&usqp=CAY"
-    },
-    {
-        id: 1,
-        name: "Product Name",
-        desc: "full product description",
-        image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSFHIKKZMvnXjX49V7dTOaOUgVsyHovcia0Bu4p6w6bIQ4X7dUzdMd8OWekFAHq-FAn03TdcPPCz5zeg5qArzc9QHcZ2UplHA&usqp=CAY"
-    },
-    {
-        id: 1,
-        name: "Product Name",
-        desc: "full product description",
-        image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSFHIKKZMvnXjX49V7dTOaOUgVsyHovcia0Bu4p6w6bIQ4X7dUzdMd8OWekFAHq-FAn03TdcPPCz5zeg5qArzc9QHcZ2UplHA&usqp=CAY"
-    },
-    {
-        id: 1,
-        name: "Product Name",
-        desc: "full product description",
-        image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSFHIKKZMvnXjX49V7dTOaOUgVsyHovcia0Bu4p6w6bIQ4X7dUzdMd8OWekFAHq-FAn03TdcPPCz5zeg5qArzc9QHcZ2UplHA&usqp=CAY"
-    }
-];
+
+/**
+ * @summary productApi
+ * @field id
+ * @field name
+ * @field desc
+ * @field image
+ * @field location
+ * @field price
+ * @field startdate
+ * @field enddate
+ */
+
+/**
+ * @summary productRegister
+ * @field isRegister
+ */
 
 const useStyle = makeStyles((theme) => ({
     root: {
 
-    },
-    status: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: '20%',
-        width: '80%',
-        margin: '80px auto 30px'
-    },
-    items: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '100%',
-        height: '80%',
-
-    },
+    }
 }));
-const Products = () => {
+
+const Products = (props) => {
+    const { products } = props;
     const classes = useStyle();
+
     return (
         <div>
             <Navbar />
-            <div className={classes.status}>
-                <p>Showing</p>
-                <p>All</p>
-                <p>Upcoming</p>
-                <p>Over</p>
-            </div>
-            <div className={classes.items}>
-                {products.map((product) => {
-                    return (<ProductItem product={product}></ProductItem>);
-                })}
-            </div>
+            <Grid container spacing={3} style={{ marginTop: '80px', padding: '20px' }}>
+                <Grid lg={3} sm={12} xs={12}>
+                    <Filter />
+                </Grid>
+                <Grid lg={9} sm={12}>
+                    {products ? products.map((product) => {
+                        return (<ProductItem product={product}></ProductItem>);
+                    }) : <Empty />}
+                </Grid>
+            </Grid>
         </div>
     );
 }
 
-export default Products;
+const mapStateToProps = state => ({
+    products: getAllProducts(state.products)
+})
+
+export default connect(mapStateToProps)(Products);

@@ -10,7 +10,7 @@ const productCard = (props) => {
         <Card
             style={{ borderRadius: '20px', height: '100%' }}
         >
-            <div className="image-container" style={{ height: '210px', width: '100px' }}>
+            <div className="image-container" style={{ height: '210px', width: '100px !important' }}>
                 <img src={product.image} style={{ maxHeight: '100%', objectFit: 'cover' }} />
             </div>
             <CardContent>

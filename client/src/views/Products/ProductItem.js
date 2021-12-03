@@ -1,69 +1,35 @@
-import React, { useState } from 'react';
-import { Button, makeStyles } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { Button, makeStyles, Grid, Card, CardContent } from '@material-ui/core';
 import { generatePath, useHistory } from "react-router-dom";
 
-import BidTimeTag from './BidTimeTag';
-import BidStatus from './BidStatus';
+import BidTimeTag from '../../components/Product/BidTimeTag';
+import YourBid from '../../components/Product/YourBid';
+import BidStatus from '../../components/Product/BidStatus';
 
 const useStyle = makeStyles((theme) => ({
-    root: {
-
-    },
     item: {
         backgroundColor: 'white',
-        width: '75%',
-        height: '30%',
-        boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
-        borderRadius: '1.5%',
-        padding: '0.1%',
-        display: 'flex',
-        flexDirection: 'row',
-        margin: '1%'
-
+        borderRadius: '20px',
+        margin: '15px'
     },
     itemImage: {
-        height: '100%',
-        width: '40%',
+        width: '80%',
         padding: '3%',
 
     },
-    itemDetail: {
-        height: '100%',
-        padding: '0.5%',
-        width: '40%',
-        borderRight: '1px solid #e7e9eb',
-        display: 'flex',
-    },
-    itemStatus: {
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        width: '60%',
-        padding: '3%',
-        wordWrap: 'break-word',
-        alignItems: 'space-around'
-    },
-    bidDetail: {
-        height: '100%',
-        width: '60%',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '0.5%',
-        justifyContent: 'space-around'
-    },
-
     button: {
-        width: "50%",
-        height: '10%',
+        fontSize: '25px',
         color: 'green',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        borderColor: 'green'
     },
 
 }));
 const ProductItem = ({ product }) => {
-    const { id, image, name, desc } = product;
+    const { id, image, name } = product;
     const classes = useStyle();
     const [productId, serProductId] = useState();
+    const [remainingTime, setRemainingTime] = useState();
     const history = useHistory();
 
     const handleProceed = (id) => {
@@ -71,26 +37,101 @@ const ProductItem = ({ product }) => {
         productId && history.push(generatePath("/product/:id", { id }));
     };
 
+    useEffect(() => {
+        const tick = setInterval(() =>
+            setRemainingTime(scheduler(new Date(), '2021-11-29T18:35:25.235Z', '2021-11-30T18:35:25.235Z')), 10000)
+        return () => clearInterval(tick);
+    });
+
+    //calculate total time remaining
+    const scheduler = (current, start, end) => {
+        if (new Date(current) <= new Date(start)) {
+            //calculate total time remaining before bidding start
+            let d = (new Date(start)) - (new Date());
+            let weekdays = Math.floor(d / 1000 / 60 / 60 / 24 / 7);
+            let days = Math.floor(d / 1000 / 60 / 60 / 24 - weekdays * 7);
+            let hours = Math.floor(d / 1000 / 60 / 60 - weekdays * 7 * 24 - days * 24);
+            let minutes = Math.floor(d / 1000 / 60 - weekdays * 7 * 24 * 60 - days * 24 * 60 - hours * 60);
+            let seconds = Math.floor(d / 1000 - weekdays * 7 * 24 * 60 * 60 - days * 24 * 60 * 60 - hours * 60 * 60 - minutes * 60);
+
+            let t = `${days} d ${hours} h ${minutes} m ${seconds} s`;
+            return t;
+        } else if (new Date(start) <= new Date(end)) {
+            //calculate total time remaining after bidding start and before and time
+            let d = (new Date(end)) - (new Date(start));
+            let weekdays = Math.floor(d / 1000 / 60 / 60 / 24 / 7);
+            let days = Math.floor(d / 1000 / 60 / 60 / 24 - weekdays * 7);
+            let hours = Math.floor(d / 1000 / 60 / 60 - weekdays * 7 * 24 - days * 24);
+            let minutes = Math.floor(d / 1000 / 60 - weekdays * 7 * 24 * 60 - days * 24 * 60 - hours * 60);
+            let seconds = Math.floor(d / 1000 - weekdays * 7 * 24 * 60 * 60 - days * 24 * 60 * 60 - hours * 60 * 60 - minutes * 60);
+
+            let t = `${days} d ${hours} h ${minutes} m ${seconds} s`;
+            return t;
+        } else {
+            // what to do after bidding time end
+            // stop timeing (0:0:0)
+            // duration complete (message from backend)
+            // bid annucement  (topper announcement -> top bidder id -> if(top_bidder_id == your_id) return id, amount)
+            // add to cart
+
+            //won
+            //getwinnerid
+            //match winnerid
+            // if(top_bidder_id == your_id){
+            //     setWinner(data);
+            //     const data = {product_id, your_id, price, date};
+            //     addTocart(data);
+            // }
+        }
+    }
+
     return (
-        <div className={classes.item}>
-            <div className={classes.itemDetail}>
-                <img className={classes.itemImage} src={image} alt=""></img>
-                <div className={classes.itemStatus}>
-                    <div>{name}</div>
-                    <div style={{ color: 'grey' }} >{desc}</div>
-                    <Button
-                        className={classes.button}
-                        variant="outlined"
-                        onClick={(e) => { handleProceed(id) }}
-                    >Start Bid</Button>
-                </div>
-            </div>
-            <div className={classes.bidDetail}>
-                <div style={{ color: 'green' }}>Bidding is live!!!  </div>
-                <BidTimeTag />
-                <BidStatus />
-            </div>
-        </div>
+        <Card className={classes.item}>
+            <CardContent>
+                <Grid container spacing={3}>
+                    <Grid item lg={6} sm={12} xl={6} xs={12}>
+                        <Grid container spacing={3} >
+                            <Grid item lg={6} sm={12} xl={6} xs={12}> <div style={{ fontSize: '30px' }}>{name}</div></Grid>
+                            <Grid item lg={6} sm={12} xl={6} xs={12}>
+                                <Button
+                                    className={classes.button}
+                                    variant="outlined"
+                                    onClick={(e) => { handleProceed(id) }}
+                                >Start Bid</Button>
+                            </Grid>
+                            <Grid item lg={12}>
+                                <img className={classes.itemImage} src={image} alt=""></img>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item lg={6} sm={12} xl={6} xs={12}>
+                        <Grid container spacing={3}>
+                            <Grid item lg={12}>
+                                <div style={{ color: 'green' }}>Bidding is live!!!  </div>
+                            </Grid>
+                            <Grid item lg={12}>
+                                <BidTimeTag
+                                    dateState={new Date('2021-11-26T18:35:25.235Z')}
+                                    remainingTime={remainingTime}
+                                />
+                            </Grid>
+                            <Grid item lg={12}>
+                                <YourBid
+                                    yourBid={"yourBid"}
+                                    isRegister={false}
+                                />
+                            </Grid>
+                            <Grid item lg={12}>
+                                <BidStatus
+                                    highestBid={"highestBid"}
+                                    startedBid={"startedBid"}
+                                />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </CardContent>
+        </Card>
     );
 };
 

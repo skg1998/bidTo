@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ScheduleForm = (props) => {
-    const { slots, categories } = props;
+    const { slots, categories, createHandler } = props;
     const classes = useStyles();
     const [name, setName] = useState('');
     const [desc, setDesc] = useState('');
@@ -39,7 +39,15 @@ const ScheduleForm = (props) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log(name, desc, price, category, bidding, fileNames);
+        const data = {
+            name,
+            desc,
+            price,
+            category,
+            bidding,
+            fileNames: fileNames[0]
+        }
+        createHandler(data);
     };
 
     const handleDrop = acceptedFiles => setFileNames(acceptedFiles.map(file => file.name));

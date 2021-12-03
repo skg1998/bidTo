@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import { ThemeProvider } from '@material-ui/styles';
 import MainRouter from './routes/Router';
-import store from './store/Store';
+import { store } from './store/Store';
 
 //theme
 import { theme } from './styles/Theme-variable';

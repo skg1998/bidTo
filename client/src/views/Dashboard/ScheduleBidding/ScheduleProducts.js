@@ -25,7 +25,7 @@ const ScheduleProducts = (props) => {
                         container
                         spacing={3}
                     >
-                        {products.map((product) => (
+                        {products && products.map((product) => (
                             <Grid
                                 item
                                 lg={4}
