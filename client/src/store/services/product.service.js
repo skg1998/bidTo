@@ -16,27 +16,17 @@ const createProduct = (data) => {
         data: data
     };
 
-    return new Promise((resolve, reject) => {
-        axios(configs).then(({ status, data }) => {
-            resolve(status == 200 && data ? data : null)
-        })
-            .catch(reject)
-    })
+    return axios(configs);
 }
 
 const getAllProducts = () => {
     const configs = {
-        method: 'post',
+        method: 'GET',
         url: BASE_URL + BASE_PATH + "product",
         headers: headers
     };
 
-    return new Promise((resolve, reject) => {
-        axios(configs).then(({ status, data }) => {
-            resolve(status == 200 && data ? data : null)
-        })
-            .catch(reject)
-    })
+    return axios(configs);
 }
 
 const getMyAllProducts = () => {
@@ -46,12 +36,7 @@ const getMyAllProducts = () => {
         headers: headers
     };
 
-    return new Promise((resolve, reject) => {
-        axios(configs).then(({ status, data }) => {
-            resolve(status == 200 && data ? data : null)
-        })
-            .catch(reject)
-    })
+    return axios(configs);
 }
 
 const getProductById = (id) => {
@@ -61,12 +46,7 @@ const getProductById = (id) => {
         headers: headers
     };
 
-    return new Promise((resolve, reject) => {
-        axios(configs).then(({ status, data }) => {
-            resolve(status == 200 && data ? data : null)
-        })
-            .catch(reject)
-    })
+    return axios(configs);
 }
 
 const updateProduct = (id, data) => {
@@ -78,12 +58,7 @@ const updateProduct = (id, data) => {
         data: data
     };
 
-    return new Promise((resolve, reject) => {
-        axios(configs).then(({ status, data }) => {
-            resolve(status == 200 && data ? data : null)
-        })
-            .catch(reject)
-    })
+    return axios(configs);
 }
 
 const deleteProduct = (id) => {
@@ -93,12 +68,7 @@ const deleteProduct = (id) => {
         headers: headers
     };
 
-    return new Promise((resolve, reject) => {
-        axios(configs).then(({ status, data }) => {
-            resolve(status == 200 && data ? data : null)
-        })
-            .catch(reject)
-    })
+    return axios(configs);
 }
 
 const getSlot = () => {
@@ -108,12 +78,7 @@ const getSlot = () => {
         headers: headers
     };
 
-    return new Promise((resolve, reject) => {
-        axios(configs).then(({ status, data }) => {
-            resolve(status == 200 && data ? data : null)
-        })
-            .catch(reject)
-    })
+    return axios(configs);
 }
 
 
