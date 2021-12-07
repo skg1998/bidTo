@@ -4,16 +4,14 @@ import logo from './Image/logo.png';
 import {ListItemIcon, Divider, Badge} from '@material-ui/core';
 import {NotificationImportant, ShoppingBasket, Favorite} from '@material-ui/icons';
 import AccountMenu from './Navbar/AccountManu';
-import {authHeader} from '../../store/helpers';
 
 import { connect } from "react-redux";
 import { getTotalCartItems } from "../../store/reducers/cartReducer";
 import { getTotalWishlistItems } from "../../store/reducers/wishListReduce";
 
 function Navbar(props) {
-    const { totalCartItems, totalWishlistItems } = props;
+    const { totalCartItems, totalWishlistItems, auth, loading } = props;
     const [nav,setnav]=useState(false);
-    
     const changeBackground=()=>{
          if(window.scrollY>=50){
              setnav(true);
@@ -37,7 +35,8 @@ function Navbar(props) {
                <li><Link to="/products">Top Bid</Link></li>
                 <li><Link to="/about">About us</Link></li>
                 <Divider orientation="vertical" flexItem />
-                {authHeader()?<>
+                {auth?
+                <>
                     <li>
                     <ListItemIcon>
                         <Link to="/wishlist">
@@ -63,7 +62,7 @@ function Navbar(props) {
                 </li>
                 </>:null
                 }
-               {authHeader() ? 
+               {auth ? 
                <> 
                 <li> <AccountMenu/> </li>
                </> : 
@@ -80,6 +79,8 @@ function Navbar(props) {
 const mapStateToProps = (state) => ({
     totalCartItems: getTotalCartItems(state.cart),
     totalWishlistItems: getTotalWishlistItems(state.wishlist),
-});
+    auth: state.authReducer.login.isLogin,
+    loading: state.authReducer.login.loading
+}); 
 
 export default connect(mapStateToProps)(Navbar);
