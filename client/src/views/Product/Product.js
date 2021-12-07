@@ -17,7 +17,7 @@ import BidTimeTag from '../../components/Product/BidTimeTag';
 import YourBid from '../../components/Product/YourBid';
 
 //Redux Store
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { getProduct, getSelectedQuantity } from "../../store/reducers/productReducer";
 import { isWishlisted } from "../../store/reducers/wishListReduce";
 import { isAddedToCart } from "../../store/reducers/cartReducer";
@@ -37,13 +37,17 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     height: "100%",
     objectFit: "fit",
+  },
+  infoBox: {
+    margin: '20px !important',
+
   }
 }));
 
 const Product = (props) => {
-  const prodId = parseInt(props.match.params.prodId);
+  const { id } = useParams();
+
   const {
-    getProduct,
     getSelectedQuantity,
     isWishlisted,
     isAddedToCart,
@@ -52,23 +56,25 @@ const Product = (props) => {
     addToCart,
     addToWishlist,
     removeFromWishlist,
+    getProductById
   } = props;
 
-  let product = getProduct(prodId);
-  let selectedQuantity = getSelectedQuantity(prodId);
-  let isProdWishlisted = isWishlisted(prodId);
-  let isProdAdded = isAddedToCart(prodId);
+  useEffect(() => {
+    getProductById(id)
+  }, []);
+
+  let product = useSelector(state => state.products.byId?.product?.data ?? {});
+  let selectedQuantity = getSelectedQuantity(id);
+  let isProdWishlisted = isWishlisted(id);
+  let isProdAdded = isAddedToCart(id);
 
   const [products, setProduct] = useState();
   const [cart, setToCart] = useState();
   const [winner, setWinner] = useState();
   const [remainingTime, setRemainingTime] = useState();
-
-  const { id } = useParams();
   const classes = useStyles();
 
   useEffect(() => {
-
     // create bid 
     // get bid process by user by hours
     // get bid type day
@@ -133,16 +139,16 @@ const Product = (props) => {
             <Grid container spacing={3}>
               <Grid item lg={12}>
                 <BidHeader
-                  title={product.title}
-                  bidId={prodId}
+                  title={product.name}
+                  prodId={product.id}
                   isProdWishlisted={isProdWishlisted}
-                  removeFromWishlist={(prodId) => removeFromWishlist(prodId)}
-                  addToWishlist={(prodId) => addToWishlist(prodId)}
+                  removeFromWishlist={(id) => removeFromWishlist(id)}
+                  addToWishlist={(id) => addToWishlist(id)}
                 />
               </Grid>
               <Grid item lg={12}>
                 <BidTimeTag
-                  dateState={new Date(product.startdate)}
+                  dateState={new Date(product.startbid)}
                   remainingTime={remainingTime}
                 />
               </Grid>
@@ -162,23 +168,20 @@ const Product = (props) => {
                 <Grid item lg={12}>
                   <Card>
                     <CardContent>
-                      <Grid item lg={12}>
-                        <Public></Public>
-                        <div style={{ marginRight: '4%' }}>Location</div>
+                      <Grid item lg={12} clasaName={classes.infoBox}>
+                        <div style={{ marginRight: '4%' }}> <Public></Public>Location</div>
                         <div>{product.location}</div>
                       </Grid>
                       <Grid item lg={12}>
-                        <Info></Info>
-                        <div>Description</div>
-                        <div >{product.description}</div>
+                        <div><Info></Info> Description</div>
+                        <div >{product.desc}</div>
                       </Grid>
                       <Grid item lg={12}>
-                        <AttachMoneyRounded />
-                        <div style={{ marginRight: '6%' }}>Price</div>
+                        <div style={{ marginRight: '6%' }}> <AttachMoneyRounded /> Price</div>
                         <div >{product.price}</div>
                       </Grid>
                       <Grid item lg={12}>
-                        <img className={classes.image} src={product.src}></img>
+                        <img className={classes.image} src={product.image}></img>
                       </Grid>
                     </CardContent>
                   </Card>
@@ -192,7 +195,7 @@ const Product = (props) => {
               <Grid lg={12}><LineContainer /></Grid>
               <Grid lg={12}><PieContainer /></Grid>
               <Grid lg={12}><BarContainer /></Grid>
-              <Grid lg={12}><BidHistory bidders={null} /></Grid>
+              <Grid lg={12}><BidHistory bidders={[]} /></Grid>
               <Grid lg={12}><BidQuery /></Grid>
             </Grid>
           </Grid>
@@ -203,7 +206,6 @@ const Product = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  getProduct: (id) => getProduct(state.products, id),
   getSelectedQuantity: (id) => getSelectedQuantity(state.products, id),
   isWishlisted: (id) => isWishlisted(state.wishlist, id),
   isAddedToCart: (id) => isAddedToCart(state.cart, id),
@@ -215,6 +217,7 @@ const mapDispatchToProps = (dispatch) => ({
   decrementQuantity: (id) => dispatch(productAction.decrementQuantity(id)),
   addToWishlist: (id) => dispatch(wishListAction.addToWishlist(id)),
   removeFromWishlist: (id) => dispatch(wishListAction.removeFromWishlist(id)),
+  getProductById: (id) => dispatch(productAction.getProductById(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);
