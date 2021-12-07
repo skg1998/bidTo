@@ -4,22 +4,10 @@ import Navbar from '../Home/Navbar';
 import ProductItem from '../Products/ProductItem';
 import Filter from '../../components/Filters/Filters';
 import Empty from '../../components/Empty/Empty'
+
 //redux store
-import { connect } from 'react-redux'
-import { getAllProducts } from '../../store/reducers/productReducer';
-
-
-/**
- * @summary productApi
- * @field id
- * @field name
- * @field desc
- * @field image
- * @field location
- * @field price
- * @field startdate
- * @field enddate
- */
+import { connect, useSelector } from 'react-redux'
+import { productAction } from '../../store/actions';
 
 /**
  * @summary productRegister
@@ -33,9 +21,16 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 const Products = (props) => {
-    const { products } = props;
+    const { getAllProducts } = props;
     const classes = useStyle();
 
+    useEffect(() => {
+        getAllProducts();
+    }, []);
+
+    const products = useSelector(state => state.products.allproducts?.products?.data ?? []);
+
+    console.log("products", products);
     return (
         <div>
             <Navbar />
@@ -54,7 +49,11 @@ const Products = (props) => {
 }
 
 const mapStateToProps = state => ({
-    products: getAllProducts(state.products)
+
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    getAllProducts: () => dispatch(productAction.getAllProducts())
 })
 
-export default connect(mapStateToProps)(Products);
+export default connect(mapStateToProps, mapDispatchToProps)(Products);
