@@ -1,4 +1,6 @@
+/** ################################################################################# */
 // Auth
+/** ################################################################################# */
 export const USER_LOGGING_IN = 'USER_LOGGING_IN'
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 export const USER_LOGGED_OUT = 'USER_LOGGED_OUT'
@@ -31,35 +33,86 @@ export const PASSWORD_CHANGE_REQUEST = 'PASSWORD_CHANGE_REQUEST'
 export const PASSWORD_CHANGE_SUCCESS = 'PASSWORD_CHANGE_SUCCESS'
 export const PASSWORD_CHANGE_FAILURE = 'PASSWORD_CHANGE_FAILURE'
 
+
+/** ################################################################################# */
 //Products
+/** ################################################################################# */
+export const CREATE_PRODUCT_REQUEST = 'CREATE_PRODUCT_REQUEST'
+export const CREATE_PRODUCT_SUCCESS = 'CREATE_PRODUCT_SUCCESS'
+export const CREATE_PRODUCT_FAILURE = 'CREATE_PRODUCT_FAILURE'
+
+export const GET_ALL_PRODUCTS_REQUEST = 'GET_ALL_PRODUCTS_REQUEST'
+export const GET_ALL_PRODUCTS_SUCCESS = 'GET_ALL_PRODUCTS_SUCCESS'
+export const GET_ALL_PRODUCTS_FAILURE = 'GET_ALL_PRODUCTS_FAILURE'
+
+export const GET_MY_PRODUCTS_REQUEST = 'GET_MY_PRODUCTS_REQUEST'
+export const GET_MY_PRODUCTS_SUCCESS = 'GET_MY_PRODUCTS_SUCCESS'
+export const GET_MY_PRODUCTS_FAILURE = 'GET_MY_PRODUCTS_FAILURE'
+
+export const GET_PRODUCTS_BY_ID_REQUEST = 'GET_PRODUCTS_BY_ID_REQUEST'
+export const GET_PRODUCTS_BY_ID_SUCCESS = 'GET_PRODUCTS_BY_ID_SUCCESS'
+export const GET_PRODUCTS_BY_ID_FAILURE = 'GET_PRODUCTS_BY_ID_FAILURE'
+
+export const UPDATE_PRODUCT_REQUEST = 'UPDATE_PRODUCT_REQUEST'
+export const UPDATE_PRODUCT_SUCCESS = 'UPDATE_PRODUCT_SUCCESS'
+export const UPDATE_PRODUCT_FAILURE = 'UPDATE_PRODUCT_FAILURE'
+
+export const DELETE_PRODUCT_REQUEST = 'DELETE_PRODUCT_REQUEST'
+export const DELETE_PRODUCT_SUCCESS = 'DELETE_PRODUCT_SUCCESS'
+export const DELETE_PRODUCT_FAILURE = 'DELETE_PRODUCT_FAILURE'
+
+export const GET_CATEGORY_REQUEST = 'GET_CATEGORY_REQUEST'
+export const GET_CATEGORY_SUCCESS = 'GET_CATEGORY_SUCCESS'
+export const GET_CATEGORY_FAILURE = 'GET_CATEGORY_FAILURE'
+
+export const GET_SLOT_REQUEST = 'GET_SLOT_REQUEST'
+export const GET_SLOT_SUCCESS = 'GET_SLOT_SUCCESS'
+export const GET_SLOT_FAILURE = 'GET_SLOT_FAILURE'
+
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const FILTER_PRODUCTS_BY_SIZE = "FILTER_PRODUCTS_BY_SIZE";
 export const FILTER_PRODUCTS_BY_CATEGORY = "FILTER_PRODUCTS_BY_CATEGORY";
 export const FILTER_PRODUCTS_BY_PRICE = "FILTER_PRODUCTS_BY_PRICE";
 export const FILTER_PRODUCTS_BY_STATUS = "FILTER_PRODUCTS_BY_STATUS";
+
 export const RECEIVE_PRODUCTS = "RECEIVE_PRODUCTS";
 export const INCREMENT_QUANTITY = "INCREMENT_QUANTITY";
 export const DECREMENT_QUANTITY = "DECREMENT_QUANTITY";
 
-//Bid
 
-//Carts
+/** ################################################################################# */
+//BID
+/** ################################################################################# */
+
+
+/** ################################################################################# */
+//CARTS
+/** ################################################################################# */
 export const ADD_TO_CART = "ADD_TO_CART";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 export const CLEAR_CART = "CLEAR_CART";
 export const CHECKOUT = "CHECKOUT";
 
+
+/** ################################################################################# */
 //WISHLIST
+/** ################################################################################# */
 export const ADD_TO_WISHLIST = "ADD_TO_WISHLIST";
 export const REMOVE_FROM_WISHLIST = "REMOVE_FROM_WISHLIST";
 export const CLEAR_FAVORITE = "CLEAR_FAVORITE";
 
-//Orders
+
+/** ################################################################################# */
+//ORDERS
+/** ################################################################################# */
 export const CREATE_ORDER = "CREATE_ORDER";
 export const CLEAR_ORDER = "CLEAR_ORDER";
 export const FETCH_ORDERS = "FETCH_ORDERS";
 
-//message
+
+/** ################################################################################# */
+//MESSAGE
+/** ################################################################################# */
 export const SET_MESSAGE = "SET_MESSAGE";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
 export const ORDER_PRODUCTS_BY_PRICE = "ORDER_PRODUCTS_BY_PRICE";
