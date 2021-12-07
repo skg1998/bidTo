@@ -25,16 +25,17 @@ import {
 } from "../constant";
 
 import { createBrowserHistory } from 'history';
-const history = createBrowserHistory();
 import { authServices } from "../services";
+
+const history = createBrowserHistory();
 
 const register = (username, email, password) => (dispatch) => {
     dispatch({ type: USER_REGISTER_REQUEST })
     return authServices.register(username, email, password)
         .then(res => {
+            dispatch({ type: USER_REGISTER_SUCCESS })
             history.push('/login')
             window.location.reload(true)
-            dispatch({ type: USER_REGISTER_SUCCESS })
         })
         .catch(error => {
             dispatch({ type: USER_REGISTER_FAILURE })
@@ -45,8 +46,9 @@ const login = (username, password) => (dispatch) => {
     dispatch({ type: USER_LOGGING_IN })
     return authServices.login(username, password)
         .then(res => {
-            history.push('/')
-            window.location.reload(true)
+            //history.push('/dashboard/profile');
+            //window.location.reload(true)
+            localStorage.setItem('user', JSON.stringify(res.data))
             dispatch({ type: USER_LOGGED_IN, payload: res.data })
         })
         .catch(error => {
