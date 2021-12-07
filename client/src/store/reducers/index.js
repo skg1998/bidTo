@@ -4,7 +4,7 @@ import cart, * as fromCart from './cartReducer';
 import { orderReducer } from './orderReducer';
 import products, * as fromProducts from './productReducer';
 import { messageReducer } from './message';
-import { authReducer } from './authReducer';
+import authReducer from './authReducer';
 import wishlist from './wishListReduce';
 
 const Reducer = combineReducers({
