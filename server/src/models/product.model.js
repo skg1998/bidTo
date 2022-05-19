@@ -6,13 +6,18 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
         },
+        adminid: {
+            type: DataTypes.UUID,
+            allowNull: false
+        },
         name: { type: DataTypes.STRING },
         desc: { type: DataTypes.STRING },
+        location: { type: DataTypes.STRING },
         price: { type: DataTypes.FLOAT },
         image: { type: DataTypes.STRING },
-        Category: { type: DataTypes.INTEGER },
-        session_id: { type: DataTypes.INTEGER }
-
+        category_id: { type: DataTypes.UUID },
+        startbid: { type: DataTypes.DATE },
+        endbid: { type: DataTypes.DATE }
     }, {});
     Product.associate = function (models) {
         // associations can be defined here

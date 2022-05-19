@@ -6,6 +6,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const fileUpload = require('express-fileupload');
 
 const db = require('./models');
 const errorHandler = require('./middleware/error');
@@ -19,15 +20,16 @@ const swaggerDocument = swaggerJsDoc(SwaggerOptions);
 // Routes File
 const IndexRoutes = require('./routes/index.routes');
 const UserRoutes = require('./routes/User.routes');
+const ProductRoutes = require('./routes/Product.routes');
+const CategoryRoutes = require('./routes/Category.routes');
+const BiddingRoutes = require('./routes/Bid.routes');
 
 let app = express();
 
-//creates the table if it doesn't exist (and does nothing if it already exists)
-db.sequelize.sync();
-
 //Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+//app.use(fileUpload({ useTempFiles: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(logger('dev'));
 app.use(helmet());
@@ -38,14 +40,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 //all API
 app.use('/', IndexRoutes);
 app.use('/api/v1/users', UserRoutes);
+app.use('/api/v1/product', ProductRoutes);
+app.use('/api/v1/category', CategoryRoutes);
+app.use('/api/v1/bid', BiddingRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(errorHandler);
-
-//mysql connection
-db.sequelize.sync({ force: true }).then(() => {
-    console.log("Drop and re-sync db.");
-});
 
 module.exports = app;
 

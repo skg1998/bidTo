@@ -1,4 +1,4 @@
-const User = require("../models");
+const { User } = require("../models");
 const ErrorResponse = require('../util/errorResponse');
 const sendEmail = require('../util/sendEmail');
 const crypto = require('crypto');
@@ -35,7 +35,7 @@ exports.login = async (req, res, next) => {
         }
 
         // Check for user
-        const user = await User.findOne({ email: email }).select('+password');
+        const user = await User.findOne({ email: email });
         if (!user) {
             return next(new ErrorResponse('Invalid credentials User not found', 401));
         }
@@ -56,12 +56,13 @@ exports.login = async (req, res, next) => {
 /**
  * 
  * @desc get account
- * @route POST api/v1/auth/login
+ * @route POST api/v1/users/myprofile
  * @access Private
  */
 exports.getMyProfile = async (req, res, next) => {
     try {
-        const user = await User.findById(req.user.id);
+        console.log("req.user", req.user)
+        const user = await User.findByPk(req.user.id);
         res.status(200).json({
             success: true,
             data: user
@@ -96,12 +97,12 @@ exports.logout = async (req, res, next) => {
 /**
  * 
  * @desc list of user by id
- * @route POST api/v1/users/userbyid
+ * @route POST api/v1/users/:id
  * @access Public
  */
 exports.userByID = async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findByPk(req.params.id);
 
         if (!user) {
             return res.status(404).json({
@@ -128,15 +129,22 @@ exports.userByID = async (req, res, next) => {
  * @access Private
  */
 exports.update = async (req, res, next) => {
+    console.log("gender", req.body.gender);
     try {
-        const feildToUpdate = {
-            username: req.body.username,
-            email: req.body.email
+        const path = null;
+        if (req.file) {
+            const fileUrl = await Cloudnary.uploader.upload(req.file.path);
+            const image = await Image.create({ data: fileUrl.secure_url, cloudnaryId: fileUrl.public_id });
+            path = await Image.findByPk(image.id);
         }
-        const user = await User.findByIdAndUpdate(req.params.id, feildToUpdate, {
-            new: true,
-            runValidators: true
-        })
+
+        const feildToUpdate = {
+            gender: req.body.gender,
+            address: req.body.address,
+            image_id: (path) ? path.data : null
+        }
+
+        const user = await User.update(feildToUpdate, { where: { id: req.params.id } });
 
         if (!user) {
             return res.status(404).json({
@@ -164,9 +172,10 @@ exports.update = async (req, res, next) => {
  * @access Private
  */
 exports.remove = async (req, res, next) => {
+    console.log(req);
     try {
-        const user = await User.findByIdAndDelete(req.params.id)
-
+        const user = await User.findByPk(req.params.id);
+        console.log("user", user)
         if (!user) {
             return res.status(404).json({
                 status: false,
@@ -174,13 +183,15 @@ exports.remove = async (req, res, next) => {
             })
         }
 
+        await User.destroy({ where: { id: req.params.id } });
+
         res.status(200).json({
             status: true,
-            data: user,
             message: `User profile Deleted succesfull!`
         })
 
     } catch (err) {
+        console.log("err", err);
         next(err)
     }
 }

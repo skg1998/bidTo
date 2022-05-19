@@ -7,6 +7,7 @@ const {
     updateCategoryById,
     deleteCategoryById
 } = require('../controllers/Category.controller');
+const uploadfile = require('../middleware/uploadFile');
 
 /**
  * @swagger
@@ -19,8 +20,12 @@ const {
  * @swagger
  * /category:
  *  post:
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Category]
  *    description: Create a Category
+ *    consumes:
+ *      - application/json
  *    produces:
  *      - application/json
  *    parameters:
@@ -44,7 +49,7 @@ const {
  *      '200':
  *        description: Successfully Create a Category.
  */
-router.post('/', create);
+router.post('/', uploadfile.single("image"), create);
 
 /**
  * @swagger
@@ -62,6 +67,8 @@ router.get('/', getAllCategories);
  * @swagger
  * /category/{id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Category]
  *     description: Retrive a single category
  *     produces:
@@ -87,6 +94,8 @@ router.get('/:id', getCategoryById);
  * @swagger
  * /category/{id}:
  *   put:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Category]
  *     description: Update a single category
  *     produces:
@@ -112,6 +121,8 @@ router.put('/:id', updateCategoryById);
  * @swagger
  * /category/{id}:
  *   delete:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Category]
  *     description: Delete a single category
  *     produces:

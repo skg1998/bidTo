@@ -5,8 +5,13 @@ const {
     getAllProducts,
     getProductById,
     updateProductById,
-    deleteProductById
+    deleteProductById,
+    getAvailableSlot,
+    getMyAllProducts
 } = require('../controllers/Product.controller');
+const uploadfile = require('../middleware/uploadFile');
+
+const { hasAuthenticate } = require('../middleware/hasAuth');
 
 /**
  * @swagger
@@ -19,6 +24,8 @@ const {
  * @swagger
  * /product:
  *  post:
+ *    security:
+ *      - bearerAuth: []
  *    tags: [Product]
  *    description: Create a product
  *    produces:
@@ -56,7 +63,48 @@ const {
  *      '200':
  *        description: Successfully Create a Category.
  */
-router.post('/', create);
+router.post('/', hasAuthenticate, uploadfile.single("image"), create);
+
+/**
+ * @swagger
+ * /product/getmyproducts:
+ *   get:
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [Product]
+ *     description: Retrive My All product
+ *     responses:
+ *       200:
+ *         description: Successfully retrive my all the product
+ */
+router.get('/getmyproducts', hasAuthenticate, getMyAllProducts);
+
+/**
+* @swagger
+* /product/{id}:
+*   get:
+*     security:
+*       - bearerAuth: []
+*     tags: [Product]
+*     description: Retrive a single product
+*     produces:
+*       - application/json
+*     parameters:
+*      - in: path
+*        name: id
+*        description: Retrive product from DB.
+*        schema:
+*          type: string
+*          required:
+*            - id
+*          properties:
+*            id:
+*              type: string
+*     responses:
+*       200:
+*         description: Successfully retrive single product
+*/
+router.get('/:id', getProductById);
 
 /**
  * @swagger
@@ -72,16 +120,18 @@ router.get('/', getAllProducts);
 
 /**
  * @swagger
- * /product/{id}:
+ * /product/slot/:date:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Product]
- *     description: Retrive a single product
+ *     description: Retrive a available slot by date
  *     produces:
  *       - application/json
  *     parameters:
  *      - in: path
  *        name: id
- *        description: Retrive product from DB.
+ *        description: Retrive available slot from DB.
  *        schema:
  *          type: string
  *          required:
@@ -91,14 +141,16 @@ router.get('/', getAllProducts);
  *              type: string
  *     responses:
  *       200:
- *         description: Successfully retrive single product
+ *         description: Successfully retrive available slot
  */
-router.get('/:id', getProductById);
+router.get('/slot/:date', getAvailableSlot);
 
 /**
  * @swagger
  * /product/{id}:
  *   put:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Product]
  *     description: Update a single product
  *     produces:
@@ -124,6 +176,8 @@ router.put('/:id', updateProductById);
  * @swagger
  * /product/{id}:
  *   delete:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Product]
  *     description: Delete a single product
  *     produces:

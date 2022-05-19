@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken')
-const User = require('../models/User.model');
+const { User } = require('../models');
 const ErrorResponse = require('../util/errorResponse');
 
-exports.hasAuthentication = async (req, res, next) => {
+exports.hasAuthenticate = async (req, res, next) => {
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(" ")[1]
@@ -12,23 +12,23 @@ exports.hasAuthentication = async (req, res, next) => {
     if (!token) {
         return next(new ErrorResponse('Not Authorized to access this route', 401))
     }
-
     try {
         //verify token
         const decode = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = await User.find(decode.id)
+        req.user = await User.findByPk(decode.id, { raw: true })
+        next();
     } catch (err) {
         return next(new ErrorResponse('Not Authorized to access this route', 401))
     }
 }
 
 //Grant access to role
-exports.authorize = (...roles) => {
-    return (req, res, next) => {
-        if (!roles.includes(req.admin.role)) {
+exports.hasAuthorize = (...roles) => {
+    return async (req, res, next) => {
+        const user = await User.findOne({ where: { id: req.user.id } });
+        if (!user || !roles.includes(user.role)) {
             return next(new ErrorResponse(`User role ${req.user.role} is Not Authorized to access this route`, 403))
         }
         next();
     }
 }
-

@@ -22,11 +22,27 @@ const router = express.Router();
  *   description: User Management
  */
 
+/**
+ * @swagger
+ * /users/myprofile:
+ *   get:
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [User]
+ *     description: fetch user profile
+ *     responses:
+ *       200:
+ *         description: Fetch User Profile Sucessfully
+ */
+router.get('/myprofile', hasAuthenticate, getMyProfile);
+
 
 /**
  * @swagger
  * /users/{id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [User]
  *     description: Retrive a single user
  *     produces:
@@ -123,20 +139,10 @@ router.get('/logout', logout);
 
 /**
  * @swagger
- * /users/myProfile:
- *   get:
- *     tags: [User]
- *     description: fetch user profile
- *     responses:
- *       200:
- *         description: Fetch User Profile Sucessfully
- */
-router.get('/myProfile', hasAuthenticate, getMyProfile);
-
-/**
- * @swagger
  * /users/{id}:
  *   put:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [User]
  *     description: Retrive a single user
  *     produces:
@@ -164,6 +170,8 @@ router.put('/:id', hasAuthenticate, update);
  * @swagger
  * /users/{id}:
  *   delete:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [User]
  *     description: Delete user
  *     produces:

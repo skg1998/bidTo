@@ -1,13 +1,13 @@
 {
   "production": {
-    "use_env_variable": "DATABASE_URL"
+    "DATABASE_URL": "DB_URL"
   },
   "development": {
-    "username": "postgres",
+    "username": "DB_USER",
     "password": "DB_PASS",
-    "database": "bidto-api",
-    "host": "127.0.0.1",
+    "database": "DB_NAME",
+    "host": "DB_HOST",
     "port": 5432,
-    "dialect": "postgres"
+    "dialect": "DB_DIALECT"
   }
 }

@@ -1,17 +1,16 @@
 module.exports = (sequelize, DataTypes) => {
-    const Category = sequelize.define('category', {
+    const Image = sequelize.define('image', {
         id: {
             type: DataTypes.UUID,
             allowNull: false,
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4
         },
-        name: { type: DataTypes.STRING },
-        desc: { type: DataTypes.STRING },
-        image: { type: DataTypes.STRING }
+        data: { type: DataTypes.STRING },
+        cloudnaryId: { type: DataTypes.STRING }
     }, {});
-    Category.associate = function (models) {
+    Image.associate = function (models) {
         // associations can be defined here
     };
-    return Category;
+    return Image;
 };

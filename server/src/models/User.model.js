@@ -1,19 +1,27 @@
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 
 module.exports = (sequelize, DataTypes) => {
     const { INTEGER, STRING, DATE, UUID, UUIDV4 } = DataTypes
     const User = sequelize.define("users", {
         id: {
-            type: INTEGER,
+            type: DataTypes.UUID,
             allowNull: false,
             primaryKey: true,
-            autoIncrement: true,
+            defaultValue: DataTypes.UUIDV4
         },
         username: {
             type: STRING
         },
         email: {
+            type: STRING
+        },
+        image: { type: STRING },
+        gender: {
+            type: STRING
+        },
+        address: {
             type: STRING
         },
         password: {
@@ -24,78 +32,59 @@ module.exports = (sequelize, DataTypes) => {
             type: STRING,
             required: false
         },
-        resetPasswordExpires: {
-            type: Date,
+        resetPasswordExpire: {
+            type: DATE,
             required: false
         },
         createdAt: {
-            type: Date,
+            type: DATE,
             allowNull: false,
             defaultValue: new Date(),
             field: 'created_at'
         },
         updatedAt: {
-            type: Date,
+            type: DATE,
             allowNull: false,
             defaultValue: new Date(),
             field: 'updated_at'
-        },
+        }
     }, {
-        tableName: 'users',
-        instanceMethods: {},
         hooks: {
-            beforeCreate: function (user, options) {
-                const hashed_password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
-                user.password = hashed_password;
+            beforeCreate: async function (user, options) {
+                const salt = await bcrypt.genSalt(10)
+                user.password = bcrypt.hashSync(user.password, salt);
             },
             afterCreate: function (user, options) { }
         }
     });
 
-    User.associate = function (models) {
-        User.belongsToMany(models.Role, { through: 'users_roles', foreignKey: 'userId', otherKey: 'roleId' });
-        User.hasMany(models.Comment);
-        User.hasMany(models.Address,);
+    // Match user entered password to hashed password in database
+    User.prototype.matchPassword = async function (password) {
+        return await bcrypt.compare(password, this.password);
+    };
+
+    //Sign jWT and return 
+    User.prototype.getSignedJwtToken = function () {
+        return jwt.sign({ id: this.id }, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRE
+        })
+    };
+
+    //Generate and hashed password token
+    User.prototype.getResetPasswordToken = function () {
+        // Generate token
+        const resetToken = crypto.randomBytes(20).toString('hex');
+
+        // Hash token and set to resetPasswordToken field
+        this.resetPasswordToken = crypto
+            .createHash('sha256')
+            .update(resetToken)
+            .digest('hex');
+
+        // Set expire
+        this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+        return resetToken;
     }
 
-    User.beforeBulkUpdate(user => {
-        user.attributes.updateTime = new Date();
-        return user;
-    });
-
-    User.beforeCreate((user) => {
-        console.log(user);
-        return user;
-    });
-
-    User.prototype.isAdminSync = function () {
-        return this.roles != null && this.roles.some(role => role.name === 'ROLE_ADMIN');
-    };
-
-    User.prototype.isAdminAsync = async function () {
-        let isAdmin = false;
-        await this.getRoles().then(roles => {
-            isAdmin = roles.some(r => r.name === 'ROLE_ADMIN');
-        }).catch(err => {
-            console.error(err);
-        });
-        return isAdmin;
-    };
-
-    User.prototype.isValidPassword = function (password) {
-        return bcrypt.compareSync(password, this.password);
-    };
-
-    User.prototype.generateJwt = function () {
-        return jwt.sign(
-            {
-                userId: this.id,
-                username: this.get('username,'),
-                roles: this.roles.map(role => role.name)
-            },
-            process.env.JWT_SECRET || 'JWT_SUPER_SECRET',
-            { expiresIn: process.env.EXPIRE_TIME || 360000 }
-        );
-    };
     return User
 };
