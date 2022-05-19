@@ -1,5 +1,9 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Slider } from '@material-ui/core';
+
+//redux-store
+import { productAction } from '../../store/actions';
+import { connect } from 'react-redux';
 
 function valuetext(value) {
     return `${value}°C`;
@@ -7,8 +11,9 @@ function valuetext(value) {
 
 const minDistance = 10;
 
-export default function PriceFilter() {
-    const [value1, setValue1] = React.useState([0, 100]);
+const PriceFilter = (props) => {
+    const { filter } = props;
+    const [value1, setValue1] = useState([0, 100]);
 
     const handleChange1 = (event, newValue, activeThumb) => {
         if (!Array.isArray(newValue)) {
@@ -21,6 +26,10 @@ export default function PriceFilter() {
             setValue1([value1[0], Math.max(newValue[1], value1[0] + minDistance)]);
         }
     };
+
+    useEffect(() => {
+        filter('PRICE', value1);
+    }, [value1])
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -35,3 +44,13 @@ export default function PriceFilter() {
         </Box>
     );
 }
+
+const mapStateToProps = state => ({
+    // null
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    filter: (filtertype, val) => dispatch(productAction.filterProducts(filtertype, val))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PriceFilter);

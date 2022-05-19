@@ -5,6 +5,10 @@ import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
+//Redux
+import { connect, useSelector } from "react-redux";
+import { bidAction } from "../../store/actions";
+
 import socketIOClient from "socket.io-client";
 const socket = socketIOClient(process.env.REACT_APP_BASE_URL, { 'transports': ['websocket', 'polling'] });
 
@@ -28,32 +32,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const BidHistory = (props) => {
-    const [bid, setBids] = useState([]);
-    const { bidders } = props;
+    const { prodId, updateYourCurrentBid } = props;
     const classes = useStyles();
 
     useEffect(() => {
-        socket.on('connnection', () => {
-            console.log('connected to server');
+        socket.on('bid-created', (data) => {
+            updateYourCurrentBid(data)
         })
 
-        socket.on('order-added', (newBid) => {
-            setBids(newBid)
-        })
+        return () => {
+            socket.close();
+        };
 
-        socket.on('message', (message) => {
-            console.log(message);
-        })
+    }, [updateYourCurrentBid])
 
-        socket.on('disconnect', () => {
-            console.log('Socket disconnecting');
-        })
-
-        // socket.on(`bidding-${productID}`, function (data) {
-        //     alert(data);
-        // });
-
-    }, [])
+    let bidHistory = useSelector(state => state.bidReducer?.bidStatus?.products[prodId]?.bidhistory ?? []);
 
     return (
         <Card className={classes.root}>
@@ -64,7 +57,7 @@ const BidHistory = (props) => {
             </Box>
             <CardContent style={{ maxHeight: 300, overflow: 'auto', width: '100%' }}>
                 <Grid container spacing={3}>
-                    {bidders.map((bidder, idx) => (
+                    {bidHistory.map((bidder, idx) => (
                         <Grid item lg={12}>
                             <Box display="flex" p={1} bgcolor="background.paper" key={idx}>
                                 <Box p={1} bgcolor="grey.300">
@@ -85,4 +78,12 @@ const BidHistory = (props) => {
     )
 }
 
-export default BidHistory;
+const mapStateToProps = (state) => ({
+
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    updateYourCurrentBid: (data) => dispatch(bidAction.updateYourCurrentBid(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BidHistory);

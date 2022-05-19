@@ -37,6 +37,7 @@ class CartContainer extends Component {
 
     render() {
         const { totalItems, cartItems, totalPrice, removeFromCart, changeQty } = this.props
+        console.log("totalItems", totalItems, cartItems)
         return (
             <div>
                 {totalItems ? <Cart

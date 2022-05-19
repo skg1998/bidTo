@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
 import { makeStyles, Container, Grid, Card, CardContent } from '@material-ui/core';
 import { AttachMoneyRounded, Info, Public } from '@material-ui/icons';
@@ -18,16 +18,10 @@ import YourBid from '../../components/Product/YourBid';
 
 //Redux Store
 import { connect, useSelector } from "react-redux";
-import { getProduct, getSelectedQuantity } from "../../store/reducers/productReducer";
+import { getSelectedQuantity } from "../../store/reducers/productReducer";
 import { isWishlisted } from "../../store/reducers/wishListReduce";
 import { isAddedToCart } from "../../store/reducers/cartReducer";
-import { cartAction, wishListAction, productAction } from "../../store/actions";
-
-/**
- * @summary bid api
- * @field your bid  
- * @field highest bid  
- */
+import { cartAction, wishListAction, productAction, bidAction } from "../../store/actions";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -38,9 +32,19 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     objectFit: "fit",
   },
-  infoBox: {
-    margin: '20px !important',
-
+  infoCard: {
+    borderRadius: '20px'
+  },
+  infoKey: {
+    fontWeight: 'bold',
+    fontSize: '25px',
+    marginBottom: '15px',
+    color: '#6f7c65'
+  },
+  infoValue: {
+    fontSize: '25px',
+    marginBottom: '15px',
+    color: '#6f7c65'
   }
 }));
 
@@ -56,79 +60,50 @@ const Product = (props) => {
     addToCart,
     addToWishlist,
     removeFromWishlist,
-    getProductById
+    getProductById,
+    bidstatus,
+    getBid
   } = props;
 
   useEffect(() => {
-    getProductById(id)
+    getProductById(id);
+    //getBid(product.id);
+    // get bid process by user by hours
+    // get bid type day
   }, []);
 
-  let product = useSelector(state => state.products.byId?.product?.data ?? {});
   let selectedQuantity = getSelectedQuantity(id);
   let isProdWishlisted = isWishlisted(id);
   let isProdAdded = isAddedToCart(id);
 
-  const [products, setProduct] = useState();
-  const [cart, setToCart] = useState();
-  const [winner, setWinner] = useState();
+  let product = useSelector(state => state.products.byId?.product?.data ?? {});
+  let highestbid = useSelector(state => state.bidReducer?.bidStatus?.products[id]?.highestbid ?? "");
+  let yourbid = useSelector(state => state.bidReducer?.bidStatus?.products[id]?.yourbid ?? "");
+  let timeStatus = useSelector(state => state.bidReducer?.bidStatus?.products[product.id]?.time ?? "");
+  let bidStatusMess = useSelector(state => state.bidReducer?.bidStatus?.products[product.id]?.bidstatus ?? " ");
+  let winnerId = 1 //useSelector(state => state.bidReducer?.bidStatus?.products[product.id]?.winner ?? " ");
+  let yourId = 1// useSelector(state => state.user?.data?.data?.id ?? "");
+
   const [remainingTime, setRemainingTime] = useState();
+  const [getHighestBid, setHighestBid] = useState();
+  const [getYourBid, setYourBid] = useState();
   const classes = useStyles();
 
   useEffect(() => {
-    // create bid 
-    // get bid process by user by hours
-    // get bid type day
-    // get bid current history
-    // query 
-  }, []);
-
-  useEffect(() => {
-    const tick = setInterval(() =>
-      setRemainingTime(scheduler(new Date(), '2021-11-29T18:35:25.235Z', '2021-11-30T18:35:25.235Z')), 10000)
-    return () => clearInterval(tick);
-  });
-
-  //calculate total time remaining
-  const scheduler = (current, start, end) => {
-    if (new Date(current) <= new Date(start)) {
-      //calculate total time remaining before bidding start
-      let d = (new Date(start)) - (new Date());
-      let weekdays = Math.floor(d / 1000 / 60 / 60 / 24 / 7);
-      let days = Math.floor(d / 1000 / 60 / 60 / 24 - weekdays * 7);
-      let hours = Math.floor(d / 1000 / 60 / 60 - weekdays * 7 * 24 - days * 24);
-      let minutes = Math.floor(d / 1000 / 60 - weekdays * 7 * 24 * 60 - days * 24 * 60 - hours * 60);
-      let seconds = Math.floor(d / 1000 - weekdays * 7 * 24 * 60 * 60 - days * 24 * 60 * 60 - hours * 60 * 60 - minutes * 60);
-
-      let t = `${days} d ${hours} h ${minutes} m ${seconds} s`;
-      return t;
-    } else if (new Date(start) <= new Date(end)) {
-      //calculate total time remaining after bidding start and before and time
-      let d = (new Date(end)) - (new Date(start));
-      let weekdays = Math.floor(d / 1000 / 60 / 60 / 24 / 7);
-      let days = Math.floor(d / 1000 / 60 / 60 / 24 - weekdays * 7);
-      let hours = Math.floor(d / 1000 / 60 / 60 - weekdays * 7 * 24 - days * 24);
-      let minutes = Math.floor(d / 1000 / 60 - weekdays * 7 * 24 * 60 - days * 24 * 60 - hours * 60);
-      let seconds = Math.floor(d / 1000 - weekdays * 7 * 24 * 60 * 60 - days * 24 * 60 * 60 - hours * 60 * 60 - minutes * 60);
-
-      let t = `${days} d ${hours} h ${minutes} m ${seconds} s`;
-      return t;
+    if (bidStatusMess === 'BID END') {
+      if (winnerId === yourId) {
+        addToCart(product.id, 1);
+      }
     } else {
-      // what to do after bidding time end
-      // stop timeing (0:0:0)
-      // duration complete (message from backend)
-      // bid annucement  (topper announcement -> top bidder id -> if(top_bidder_id == your_id) return id, amount)
-      // add to cart
-
-      //won
-      //getwinnerid
-      //match winnerid
-      // if(top_bidder_id == your_id){
-      //     setWinner(data);
-      //     const data = {product_id, your_id, price, date};
-      //      addToCart(prodId, 1);
-      // }
+      const tick = setInterval(() => {
+        bidstatus(product.id, new Date(), product.startbid, product.endbid)
+        setRemainingTime(timeStatus);
+        setHighestBid(highestbid);
+        setYourBid(yourbid);
+      }, 1000);
+      return () => clearInterval(tick);
     }
-  }
+  }, [bidStatusMess]);
 
   return (
     <div>
@@ -155,30 +130,36 @@ const Product = (props) => {
               <Grid item lg={12}>
                 <Grid item lg={12}>
                   <YourBid
-                    yourBid={"yourBid"}
+                    yourBid={getYourBid}
                     isRegister={false}
                   />
                 </Grid>
                 <Grid item lg={12}>
                   <BidStatus
-                    highestBid={"highestBid"}
+                    highestBid={getHighestBid}
                     startedBid={product.price}
                   />
                 </Grid>
                 <Grid item lg={12}>
-                  <Card>
+                  <Card className={classes.infoCard}>
                     <CardContent>
-                      <Grid item lg={12} clasaName={classes.infoBox}>
-                        <div style={{ marginRight: '4%' }}> <Public></Public>Location</div>
-                        <div>{product.location}</div>
+                      <Grid item lg={12}>
+                        <Grid container spacing={3}>
+                          <Grid item lg={4} className={classes.infoKey}><div > <Public /> Location</div></Grid>
+                          <Grid item lg={8} className={classes.infoValue}><div>{product.location}</div></Grid>
+                        </Grid>
                       </Grid>
                       <Grid item lg={12}>
-                        <div><Info></Info> Description</div>
-                        <div >{product.desc}</div>
+                        <Grid container spacing={3}>
+                          <Grid item lg={4} className={classes.infoKey}><div><Info /> Description</div></Grid>
+                          <Grid item lg={8} className={classes.infoValue}><div >{product.desc}</div></Grid>
+                        </Grid>
                       </Grid>
                       <Grid item lg={12}>
-                        <div style={{ marginRight: '6%' }}> <AttachMoneyRounded /> Price</div>
-                        <div >{product.price}</div>
+                        <Grid container spacing={3}>
+                          <Grid item lg={4} className={classes.infoKey}><div > <AttachMoneyRounded /> Price</div></Grid>
+                          <Grid item lg={8} className={classes.infoValue}><div >{product.price}</div></Grid>
+                        </Grid>
                       </Grid>
                       <Grid item lg={12}>
                         <img className={classes.image} src={product.image}></img>
@@ -191,11 +172,11 @@ const Product = (props) => {
           </Grid>
           <Grid item lg={4} sm={12} xl={4} xs={12}>
             <Grid container spacing={3}>
-              <Grid lg={12}><BidInfo /></Grid>
+              <Grid lg={12}><BidInfo prodId={product.id} /></Grid>
               <Grid lg={12}><LineContainer /></Grid>
               <Grid lg={12}><PieContainer /></Grid>
               <Grid lg={12}><BarContainer /></Grid>
-              <Grid lg={12}><BidHistory bidders={[]} /></Grid>
+              <Grid lg={12}><BidHistory prodId={product.id} /></Grid>
               <Grid lg={12}><BidQuery /></Grid>
             </Grid>
           </Grid>
@@ -217,7 +198,9 @@ const mapDispatchToProps = (dispatch) => ({
   decrementQuantity: (id) => dispatch(productAction.decrementQuantity(id)),
   addToWishlist: (id) => dispatch(wishListAction.addToWishlist(id)),
   removeFromWishlist: (id) => dispatch(wishListAction.removeFromWishlist(id)),
-  getProductById: (id) => dispatch(productAction.getProductById(id))
+  getProductById: (id) => dispatch(productAction.getProductById(id)),
+  bidstatus: (prodId, current, start, end) => dispatch(bidAction.bidStatus(prodId, current, start, end)),
+  getBid: (data) => dispatch(bidAction.getBid(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);

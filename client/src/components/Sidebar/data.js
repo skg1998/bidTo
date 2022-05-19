@@ -15,7 +15,7 @@ const Menuitems = [
     {
         href: '/dashboard/table',
         icon: BallotTwoTone,
-        title: 'Table'
+        title: 'Users'
     },
     {
         href: '/dashboard/schedulebidding',

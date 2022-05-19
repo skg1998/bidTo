@@ -6,7 +6,9 @@ import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-import { bidServices } from '../../store/services';
+//redux-store
+import { connect, useSelector } from "react-redux";
+import { bidAction } from '../../store/actions';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,12 +41,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const BidInfo = (props) => {
+    const { creatBid, prodId } = props;
     const classes = useStyles();
     const [bid, setBid] = useState();
-
+    let bidStatusMess = useSelector(state => state.bidReducer?.bidStatus?.products[prodId]?.bidstatus ?? " ");
+    let highestbid = useSelector(state => state.bidReducer?.bidStatus?.products[prodId]?.highestbid ?? "");
+    let yourbid = useSelector(state => state.bidReducer?.bidStatus?.products[prodId]?.yourbid ?? "");
     const handleSubmit = e => {
         e.preventDefault();
-        bidServices.createBid(bid).then(res => console.log("res")).catch(e => { console.log(e) })
+        const data = {
+            prodId: prodId,
+            bidAmount: bid
+        }
+        creatBid(data);
     };
 
     return (
@@ -57,7 +66,7 @@ const BidInfo = (props) => {
                         </Grid>
                         <Grid item lg={12} xl={12} sm={12} xm={12}>
                             <p className={classes.heading}>
-                                Enter ceiling price <b className={classes.subh}> Max Price </b>
+                                Enter ceiling price <b className={classes.subh}> {highestbid} </b>
                             </p>
                             <TextField
                                 id="outlined-basic"
@@ -68,10 +77,14 @@ const BidInfo = (props) => {
                             />
                         </Grid>
                         <Grid item lg={12} xl={12} sm={12} xm={12}>
-                            <Button type="submit" className={classes.button}> Place your Bid </Button>
+                            <Button
+                                disabled={bidStatusMess === 'BID END' || bidStatusMess === "BID NOT STARTED YET"}
+                                type="submit"
+                                className={classes.button}
+                            > Place your Bid </Button>
                         </Grid>
                         <Grid item lg={12} xl={12} sm={12} xm={12}>
-                            <p className={classes.heading}>your highest bid is <b className={classes.subh}> 1335 </b></p>
+                            <p className={classes.heading}>your highest bid is <b className={classes.subh}> {yourbid} </b></p>
                         </Grid>
                     </Grid>
                 </CardContent>
@@ -80,4 +93,12 @@ const BidInfo = (props) => {
     )
 }
 
-export default BidInfo;
+const mapStateToProps = (state) => ({
+    //null
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    creatBid: (data) => dispatch(bidAction.creatBid(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BidInfo);

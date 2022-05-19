@@ -6,12 +6,13 @@ import CardContent from '@material-ui/core/CardContent';
 
 const productCard = (props) => {
     const { product, deleteHandler, updateHandler } = props;
+
     return (
         <Card
             style={{ borderRadius: '20px', height: '100%' }}
         >
             <div className="image-container" style={{ height: '210px', width: '100px !important' }}>
-                <img src={product.image} style={{ maxHeight: '100%', objectFit: 'cover' }} />
+                <img src={product.image} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
             <CardContent>
                 <Grid container spacing={3}>

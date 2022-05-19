@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import cart, * as fromCart from './cartReducer';
 import { orderReducer } from './orderReducer';
 import products, * as fromProducts from './productReducer';
+import bidReducer from './bidReducer';
 import { messageReducer } from './message';
 import authReducer from './authReducer';
 import wishlist from './wishListReduce';
@@ -13,7 +14,8 @@ const Reducer = combineReducers({
     orderReducer,
     products,
     wishlist,
-    messageReducer
+    messageReducer,
+    bidReducer
 })
 
 export default Reducer;

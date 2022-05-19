@@ -1,16 +1,21 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core';
+import React, { useEffect } from 'react';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import ProductCard from '../../../components/cards/productCard'
 
-const useStyles = makeStyles(theme => ({
-
-}));
+//redux store
+import { connect, useSelector } from 'react-redux'
+import { productAction } from '../../../store/actions'
 
 const ScheduleProducts = (props) => {
-    const { products, updateHandler, deleteHandler } = props
+    const { getMyAllProducts, deleteHandler, updateHandler } = props
+    const products = useSelector(state => state.products.myProd?.myallProduct?.data ?? []);
+
+    useEffect(() => {
+        getMyAllProducts();
+    }, [])
+
     return (
         <div className="product-container-dashboard">
             <Box
@@ -48,4 +53,12 @@ const ScheduleProducts = (props) => {
     );
 };
 
-export default ScheduleProducts;
+const mapStateToProps = (state) => ({
+    // null
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    getMyAllProducts: () => dispatch(productAction.getMyAllProducts()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScheduleProducts);

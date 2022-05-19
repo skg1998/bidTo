@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -8,6 +8,10 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
 import Dropzone from "react-dropzone";
+
+//redux store
+import { connect, useSelector } from 'react-redux';
+import { productAction } from '../../../store/actions';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -28,29 +32,40 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ScheduleForm = (props) => {
-    const { slots, categories, createHandler } = props;
+    const { getAllCategories, createProducts } = props;
     const classes = useStyles();
     const [name, setName] = useState('');
     const [desc, setDesc] = useState('');
+    const [location, setLocation] = useState('');
     const [price, setPrice] = useState('');
     const [fileNames, setFileNames] = useState([]);
     const [category, setCategory] = useState('');
-    const [bidding, setBidding] = useState('');
+    const [startBidding, setStartBidding] = useState(new Date());
+    const [endBidding, setEndBidding] = useState(new Date());
 
     const handleSubmit = e => {
         e.preventDefault();
-        const data = {
-            name,
-            desc,
-            price,
-            category,
-            bidding,
-            fileNames: fileNames[0]
-        }
-        createHandler(data);
+        let formData = new FormData();
+        formData.append("name", name);
+        formData.append("desc", desc);
+        formData.append("price", price);
+        formData.append("category", category);
+        formData.append("startBidding", startBidding);
+        formData.append("endBidding", endBidding);
+        formData.append("image", fileNames[0]);
+        createProducts(formData);
     };
 
-    const handleDrop = acceptedFiles => setFileNames(acceptedFiles.map(file => file.name));
+    useEffect(() => {
+        getAllCategories();
+    }, []);
+
+    const fetchcategory = useSelector(state => state.products.Category?.category?.data.data ?? []);
+    const categories = fetchcategory && fetchcategory.map(cate => {
+        return { key: cate.id, value: cate.name };
+    });
+
+    const handleDrop = acceptedFiles => setFileNames(acceptedFiles.map(file => file));
 
     return (
         <form className={classes.root} onSubmit={handleSubmit}>
@@ -76,6 +91,14 @@ const ScheduleForm = (props) => {
                             </Grid>
                             <Grid item lg={12} sm={12} xl={12} xs={12}>
                                 <TextField
+                                    placeholder="Location"
+                                    variant="outlined"
+                                    value={location}
+                                    onChange={e => setLocation(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item lg={12} sm={12} xl={12} xs={12}>
+                                <TextField
                                     placeholder="Price"
                                     variant="outlined"
                                     value={price}
@@ -84,75 +107,85 @@ const ScheduleForm = (props) => {
                             </Grid>
                         </Grid>
                         <Grid item lg={6} md={12} xl={12}>
-                            <Dropzone
-                                onDrop={handleDrop}
-                                accept="image/*"
-                                minSize={1024}
-                                maxSize={3072000}
-                            >
-                                {({
-                                    getRootProps,
-                                    getInputProps,
-                                    isDragActive,
-                                    isDragAccept,
-                                    isDragReject
-                                }) => {
-                                    const additionalClass = isDragAccept
-                                        ? "accept"
-                                        : isDragReject
-                                            ? "reject"
-                                            : "";
+                            <Grid item lg={12} sm={12} xl={12} xs={12}>
+                                <TextField
+                                    select
+                                    label="Category"
+                                    variant="outlined"
+                                    required
+                                    value={category}
+                                    onChange={e => setCategory(e.target.value)}
+                                >
+                                    {categories.map((category) => (
+                                        <MenuItem value={category.key}>
+                                            {category.value}
+                                        </MenuItem>
+                                    ))
+                                    }
+                                </TextField>
+                            </Grid>
+                            <Grid item lg={12} sm={12} xl={12} xs={12} style={{ width: "87%", height: '69%', margin: "2%" }}>
+                                <Dropzone
+                                    onDrop={handleDrop}
+                                    accept="image/*"
+                                    minSize={1024}
+                                    maxSize={3072000}
+                                >
+                                    {({
+                                        getRootProps,
+                                        getInputProps,
+                                        isDragActive,
+                                        isDragAccept,
+                                        isDragReject
+                                    }) => {
+                                        const additionalClass = isDragAccept
+                                            ? "accept"
+                                            : isDragReject
+                                                ? "reject"
+                                                : "";
 
-                                    return (
-                                        <div
-                                            style={{ height: "100%" }}
-                                            {...getRootProps({
-                                                className: `dropzone ${additionalClass}`
-                                            })}
-                                        >
-                                            <input {...getInputProps()} />
-                                            <span>{isDragActive ? "📂" : "📁"}</span>
-                                            <p>Drag'n'drop images, or click to select files</p>
-                                        </div>
-                                    );
-                                }}
-                            </Dropzone>
+                                        return (
+                                            <div
+                                                style={{ height: "100%" }}
+                                                {...getRootProps({
+                                                    className: `dropzone ${additionalClass}`
+                                                })}
+                                            >
+                                                <input {...getInputProps()} />
+                                                <span>{isDragActive ? "📂" : "📁"}</span>
+                                                <p>Drag'n'drop images, or click to select files</p>
+                                            </div>
+                                        );
+                                    }}
+                                </Dropzone>
+                            </Grid>
+
                         </Grid>
                     </Grid>
                     <Grid container spacing={3}>
                         <Grid item lg={6} md={12} xl={12}>
                             <TextField
-                                select
-                                label="Schedule"
                                 variant="outlined"
                                 required
-                                value={bidding}
-                                onChange={e => setBidding(e.target.value)}
-                            >
-                                {slots.map((category) => (
-                                    <MenuItem key={category.value} value={category.value}>
-                                        {category.text}
-                                    </MenuItem>
-                                ))
-                                }
-                            </TextField>
+                                id="datetime-local"
+                                label="Start Bidding"
+                                type="datetime-local"
+                                defaultValue="2017-05-24T10:30"
+                                value={startBidding}
+                                onChange={e => setStartBidding(e.target.value)}
+                            />
                         </Grid>
                         <Grid item lg={6} md={12} xl={12}>
                             <TextField
-                                select
-                                label="Category"
                                 variant="outlined"
                                 required
-                                value={category}
-                                onChange={e => setCategory(e.target.value)}
-                            >
-                                {categories.map((category) => (
-                                    <MenuItem key={category.value} value={category.value}>
-                                        {category.text}
-                                    </MenuItem>
-                                ))
-                                }
-                            </TextField>
+                                id="datetime-local"
+                                label="End Bidding"
+                                type="datetime-local"
+                                defaultValue="2017-05-24T10:30"
+                                value={endBidding}
+                                onChange={e => setEndBidding(e.target.value)}
+                            />
                         </Grid>
                     </Grid>
                     <div>
@@ -167,4 +200,13 @@ const ScheduleForm = (props) => {
     );
 };
 
-export default ScheduleForm;
+const mapStateToProps = state => ({
+    //null
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    getAllCategories: () => dispatch(productAction.getAllCategories()),
+    createProducts: (data) => dispatch(productAction.createProducts(data))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScheduleForm);

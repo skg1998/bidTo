@@ -22,7 +22,7 @@ export default class App extends React.Component {
         return (
             <div>
                 <Line
-                    data={state}
+                    data={this.props.data ? this.props.data : state}
                     options={{
                         title: {
                             display: true,

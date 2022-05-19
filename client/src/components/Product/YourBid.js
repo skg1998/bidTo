@@ -25,7 +25,7 @@ const YourBid = (props) => {
     return (
         <Grid container spacing={3}>
             <Grid lg={12}>
-                {isRegister ?
+                {true ?
                     <Card className={classes.currentBidStatus}>
                         <CardContent>
                             <Grid container spacing={3}>

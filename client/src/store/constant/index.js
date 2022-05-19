@@ -69,11 +69,16 @@ export const GET_SLOT_REQUEST = 'GET_SLOT_REQUEST'
 export const GET_SLOT_SUCCESS = 'GET_SLOT_SUCCESS'
 export const GET_SLOT_FAILURE = 'GET_SLOT_FAILURE'
 
+
+/** ################################################################################# */
+//FILTER
+/** ################################################################################# */
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
 export const FILTER_PRODUCTS_BY_SIZE = "FILTER_PRODUCTS_BY_SIZE";
 export const FILTER_PRODUCTS_BY_CATEGORY = "FILTER_PRODUCTS_BY_CATEGORY";
 export const FILTER_PRODUCTS_BY_PRICE = "FILTER_PRODUCTS_BY_PRICE";
 export const FILTER_PRODUCTS_BY_STATUS = "FILTER_PRODUCTS_BY_STATUS";
+export const FILTER_PRODUCTS_BY_SEARCH = "FILTER_PRODUCTS_BY_SEARCH";
 
 export const RECEIVE_PRODUCTS = "RECEIVE_PRODUCTS";
 export const INCREMENT_QUANTITY = "INCREMENT_QUANTITY";
@@ -83,7 +88,24 @@ export const DECREMENT_QUANTITY = "DECREMENT_QUANTITY";
 /** ################################################################################# */
 //BID
 /** ################################################################################# */
+export const BID_NOT_START_YET = "BID_NOT_START_YET";
+export const BID_RUNNING = "BID_RUNNING";
+export const BID_END = "BID_END";
 
+export const SET_WINNER = "SET_WINNER";
+export const SET_HIGHEST_PRICE = "SET_HIGHEST_PRICE";
+export const SET_ADD_TO_CART = "SET_ADD_TO_CART";
+
+export const BID_INITIATE_REQUEST = "BID_INITIATE_REQUEST";
+export const BID_INITIATE_SUCESS = "BID_INITIATE_SUCESS";
+export const BID_INITIATE_FAILURE = "BID_INITIATE_FAILURE";
+
+export const GET_BIDDING_HISTORY_REQUEST = "GET_BIDDING_HISTORY_REQUEST";
+export const GET_BIDDING_HISTORY_SUCESS = "GET_BIDDING_HISTORY_SUCESS";
+export const GET_BIDDING_HISTORY_FAILURE = "GET_BIDDING_HISTORY_FAILURE";
+
+export const GET_YOUR_CURRENT_BID = "GET_YOUR_CURRENT_BID";
+export const ADD_YOUR_CURRENT_BID = "ADD_YOUR_CURRENT_BID";
 
 /** ################################################################################# */
 //CARTS
@@ -108,7 +130,6 @@ export const CLEAR_FAVORITE = "CLEAR_FAVORITE";
 export const CREATE_ORDER = "CREATE_ORDER";
 export const CLEAR_ORDER = "CLEAR_ORDER";
 export const FETCH_ORDERS = "FETCH_ORDERS";
-
 
 /** ################################################################################# */
 //MESSAGE

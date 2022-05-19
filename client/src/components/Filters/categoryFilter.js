@@ -1,26 +1,54 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Select from 'react-select'
 
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-]
+//redux-store
+import { productAction } from '../../store/actions';
+import { useSelector, connect } from 'react-redux';
 
 const CategoryFilter = (props) => {
-    const [state, setState] = useState({ value: [], colors: [] });
+    const { category, filter } = props;
+    const [state, setState] = useState({ value: [] });
+
+    useEffect(() => {
+        category();
+    }, []);
+
+    const fetchcategory = useSelector(state => state.products.Category?.category?.data.data ?? []);
+    const option = fetchcategory && fetchcategory.map(cate => {
+        return { value: cate.id, label: cate.name };
+    });
+
+    //const option = []
+
+    useEffect(() => {
+        filter('CATEGORY', state);
+    }, [state])
+
     return (
         <Select
             className="multi-select"
             closeMenuOnSelect={false}
             isMulti
-            //onChange={val => setState({ value: val })}
-            options={options}
+            onChange={
+                (val) => {
+                    setState({ value: val });
+                }
+            }
+            options={option}
             placeholder="Select Category"
             simpleValue
-        //value={state.value}
+            value={state.value}
         />
     )
 }
 
-export default CategoryFilter;
+const mapStateToProps = state => ({
+    // null
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    filter: (filtertype, val) => dispatch(productAction.filterProducts(filtertype, val)),
+    category: () => dispatch(productAction.getAllCategories())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryFilter);

@@ -52,8 +52,10 @@ export const isAddedToCart = (cart, id) =>
 export const getTotalCartItems = cart =>
     cart.addedIds ? cart.addedIds.length : 0
 
-export const getAllCartItems = (products, cart) =>
-    cart.addedIds.map(id => products.byId[id])
+export const getAllCartItems = (products, cart) => {
+    console.log("product reducer", products)
+    cart.addedIds.map(id => products.byId?.product?.data[id])
+}
 
 export const getQuantity = (cart, productId) =>
     cart.quantityById[productId] || 0

@@ -9,11 +9,6 @@ import Empty from '../../components/Empty/Empty'
 import { connect, useSelector } from 'react-redux'
 import { productAction } from '../../store/actions';
 
-/**
- * @summary productRegister
- * @field isRegister
- */
-
 const useStyle = makeStyles((theme) => ({
     root: {
 
@@ -28,9 +23,8 @@ const Products = (props) => {
         getAllProducts();
     }, []);
 
-    const products = useSelector(state => state.products.allproducts?.products?.data ?? []);
+    const products = useSelector(state => state.products.allproducts?.visibleProducts?.data ?? []);
 
-    console.log("products", products);
     return (
         <div>
             <Navbar />
@@ -49,7 +43,7 @@ const Products = (props) => {
 }
 
 const mapStateToProps = state => ({
-
+    //null
 });
 
 const mapDispatchToProps = (dispatch) => ({

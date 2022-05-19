@@ -1,8 +1,6 @@
 import _ from 'lodash'
 import { combineReducers } from 'redux'
 import {
-    FETCH_PRODUCTS,
-    FILTER_PRODUCTS_BY_SIZE,
     RECEIVE_PRODUCTS,
     INCREMENT_QUANTITY,
     DECREMENT_QUANTITY,
@@ -38,7 +36,12 @@ import {
 
     GET_SLOT_FAILURE,
     GET_SLOT_REQUEST,
-    GET_SLOT_SUCCESS
+    GET_SLOT_SUCCESS,
+
+    FILTER_PRODUCTS_BY_PRICE,
+    FILTER_PRODUCTS_BY_STATUS,
+    FILTER_PRODUCTS_BY_CATEGORY,
+    FILTER_PRODUCTS_BY_SEARCH
 } from "../constant";
 
 const createProd = (state = {}, action) => {
@@ -119,13 +122,45 @@ const byId = (state = {}, action) => {
     }
 }
 
-const allproducts = (state = [], action) => {
+
+let initialState = {
+    products: [],
+    visibleProducts: [],
+    message: "",
+    loading: true
+}
+
+const allproducts = (state = initialState, action) => {
     switch (action.type) {
         case GET_ALL_PRODUCTS_REQUEST:
         case GET_ALL_PRODUCTS_SUCCESS:
-            return Object.assign({}, state, { products: action.payload, loading: false })
+            return Object.assign({}, state, { products: action.payload, visibleProducts: action.payload, loading: false })
         case GET_ALL_PRODUCTS_FAILURE:
             return Object.assign({}, state, { message: action.message, loading: false })
+        case FILTER_PRODUCTS_BY_STATUS:
+        case FILTER_PRODUCTS_BY_CATEGORY: {
+            const { val } = action;
+            const visibleProducts = val ? state?.data.filter((p) => p.category_id === val?.value?.value)
+                : state.products;
+            return {
+                ...state,
+                val,
+                visibleProducts
+            };
+        }
+        case FILTER_PRODUCTS_BY_PRICE:
+        case FILTER_PRODUCTS_BY_SEARCH: {
+            const { val } = action;
+            const searchValueLowercase = val?.toLowerCase();
+            const visibleProducts = val
+                ? state?.data.filter((p) => p.name.toLowerCase().includes(searchValueLowercase) || p.desc.toLowerCase().includes(searchValueLowercase))
+                : state.products;
+            return {
+                ...state,
+                val,
+                visibleProducts
+            };
+        }
         default:
             return state
     }

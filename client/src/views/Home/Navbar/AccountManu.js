@@ -4,9 +4,11 @@ import { Box, Avatar, Menu, MenuItem, ListItemIcon, Divider, IconButton, Tooltip
 import { Settings, ExitToApp, History, AccountCircle } from '@material-ui/icons';
 import { authServices } from '../../../store/services'
 
-export default function AccountMenu() {
+//redux-store
+import { connect } from 'react-redux'
+
+const AccountMenu = (props) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [user, setUser] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -15,20 +17,14 @@ export default function AccountMenu() {
         setAnchorEl(null);
     };
 
-    useEffect(() => {
-        authServices.getMyProfile().then(data => {
-            setUser(data);
-        }).catch(err => {
-            console.log("user profile", err);
-        })
-    }, [])
+    let user = null;
 
     return (
         <React.Fragment>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                 <Tooltip title="Account settings">
                     <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-                        <Avatar sx={{ width: 32, height: 32 }}>{user ? (user.name.charAt(0) + "").toUpperCase() : "S"} </Avatar>
+                        <Avatar sx={{ width: 32, height: 32 }}>{user ? (user.username.charAt(0) + "").toUpperCase() : "S"} </Avatar>
                     </IconButton>
                 </Tooltip>
             </Box>
@@ -99,3 +95,13 @@ export default function AccountMenu() {
         </React.Fragment>
     );
 }
+
+const mapStateToProps = state => ({
+    //null
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    //getAllProducts: () => dispatch(productAction.getAllProducts())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountMenu);

@@ -34,7 +34,11 @@ import {
 
     GET_SLOT_FAILURE,
     GET_SLOT_REQUEST,
-    GET_SLOT_SUCCESS
+    GET_SLOT_SUCCESS,
+    FILTER_PRODUCTS_BY_PRICE,
+    FILTER_PRODUCTS_BY_STATUS,
+    FILTER_PRODUCTS_BY_CATEGORY,
+    FILTER_PRODUCTS_BY_SEARCH
 
 } from "../constant";
 import { productServices } from '../services';
@@ -74,7 +78,7 @@ const getProductById = (id) => (dispatch) => {
 
 const getMyAllProducts = () => (dispatch) => {
     dispatch({ type: GET_MY_PRODUCTS_REQUEST })
-    return productServices.createProduct()
+    return productServices.getMyAllProducts()
         .then(res => {
             dispatch({ type: GET_MY_PRODUCTS_SUCCESS, payload: res.data })
         })
@@ -94,9 +98,9 @@ const updateProduct = (data) => (dispatch) => {
         })
 }
 
-const deleteProduct = () => (dispatch) => {
+const deleteProduct = (id) => (dispatch) => {
     dispatch({ type: DELETE_PRODUCT_REQUEST })
-    return productServices.deleteProduct()
+    return productServices.deleteProduct(id)
         .then(res => {
             dispatch({ type: DELETE_PRODUCT_SUCCESS, payload: res.data })
         })
@@ -107,12 +111,12 @@ const deleteProduct = () => (dispatch) => {
 
 const getAllCategories = () => (dispatch) => {
     dispatch({ type: GET_CATEGORY_REQUEST })
-    return productServices.deleteProduct()
+    return productServices.getCategory()
         .then(res => {
-            dispatch({ type: GET_CATEGORY_SUCCESS, payload: res.data })
+            dispatch({ type: GET_CATEGORY_SUCCESS, payload: res })
         })
         .catch(error => {
-            dispatch({ type: GET_CATEGORY_FAILURE, message: error.response.data })
+            dispatch({ type: GET_CATEGORY_FAILURE, message: error?.response?.data })
         })
 }
 
@@ -137,17 +141,17 @@ const decrementQuantity = (productId) => ({
     payload: { productId },
 });
 
-const filterProducts = (products, size) => (dispatch) => {
-    dispatch({
-        type: FILTER_PRODUCTS_BY_SIZE,
-        payload: {
-            size: size,
-            items:
-                size === ""
-                    ? products
-                    : products.filter((x) => x.availableSizes.indexOf(size) >= 0),
-        },
-    });
+const filterProducts = (filtertype, val) => (dispatch) => {
+    console.log(filtertype, val);
+    if (filtertype == 'CATEGARY') {
+        dispatch({ type: FILTER_PRODUCTS_BY_CATEGORY, payload: { val } })
+    } else if (filtertype == 'PRICE') {
+        dispatch({ type: FILTER_PRODUCTS_BY_PRICE, payload: { val } })
+    } else if (filtertype == 'STATUS') {
+        dispatch({ type: FILTER_PRODUCTS_BY_STATUS, payload: { val } })
+    } else if (filtertype == 'SEARCH') {
+        dispatch({ type: FILTER_PRODUCTS_BY_SEARCH, payload: { val } })
+    }
 };
 
 const sortProducts = (filteredProducts, sort) => (dispatch) => {

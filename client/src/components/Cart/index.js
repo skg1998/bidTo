@@ -18,6 +18,7 @@ const Styles = theme => ({
 
 const Cart = ({ products, total, onCheckoutClicked, removeFromCart, changeQty, classes, chekcoutDialog,
     handleCheckoutDialog, handleCheckoutSubmit }) => {
+    console.log("products", products);
     const hasProducts = products.length > 0
     const nodes = hasProducts ? (
         products.map(product =>

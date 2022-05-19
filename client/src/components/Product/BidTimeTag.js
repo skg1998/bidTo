@@ -31,7 +31,7 @@ const BidTimeTag = (props) => {
                 <Grid container spacing={3}>
                     <Grid item lg={12}>
                         <div className={classes.title}>
-                            <div> <HourglassEmptyTwoTone /> Starts in <span style={{ color: 'red' }}>{remainingTime}</span> </div>
+                            <div> <HourglassEmptyTwoTone /><span style={{ color: 'red' }}>{remainingTime}</span> </div>
                         </div>
                     </Grid>
                     <Grid item lg={6} sm={12} xl={6} xs={12}>

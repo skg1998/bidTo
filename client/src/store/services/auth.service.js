@@ -3,9 +3,11 @@ import axios from 'axios';
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const BASE_PATH = process.env.REACT_APP_BASE_API_KEY;
 
+let auth_Header = authHeader();
+
 const headers = {
     'Content-Type': 'application/json',
-    'Authorization': authHeader()
+    'Authorization': auth_Header?.Authorization
 }
 
 const register = (username, email, password) => {

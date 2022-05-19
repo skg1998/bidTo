@@ -6,6 +6,10 @@ import BidTimeTag from '../../components/Product/BidTimeTag';
 import YourBid from '../../components/Product/YourBid';
 import BidStatus from '../../components/Product/BidStatus';
 
+//Redux Store
+import { connect, useSelector } from "react-redux";
+import { bidAction } from "../../store/actions";
+
 const useStyle = makeStyles((theme) => ({
     item: {
         backgroundColor: 'white',
@@ -25,12 +29,23 @@ const useStyle = makeStyles((theme) => ({
     },
 
 }));
-const ProductItem = ({ product }) => {
-    const { id, image, name } = product;
+const ProductItem = ({ product, bidstatus }) => {
+    const { id, image, name, startbid, endbid, price } = product;
     const classes = useStyle();
     const [productId, serProductId] = useState();
     const [remainingTime, setRemainingTime] = useState();
+    const [getHighestBid, setHighestBid] = useState();
+    const [getYourBid, setYourBid] = useState();
+    const [getBidStatusMess, setBidStatusMess] = useState();
+
     const history = useHistory();
+
+    let timeStatus = useSelector(state => state.bidReducer?.bidStatus?.products[id]?.time ?? "");
+    let highestbid = useSelector(state => state.bidReducer?.bidStatus?.products[id]?.highestbid ?? "");
+    let yourbid = useSelector(state => state.bidReducer?.bidStatus?.products[id]?.yourbid ?? "");
+    let bidStatusMess = useSelector(state => state.bidReducer?.bidStatus?.products[product.id]?.bidstatus ?? " ");
+    let winnerId = useSelector(state => state.bidReducer?.bidStatus?.products[product.id]?.winner ?? " ");
+    let yourId = useSelector(state => state.user?.data?.data?.id ?? "");
 
     const handleProceed = (id) => {
         serProductId(id)
@@ -38,52 +53,21 @@ const ProductItem = ({ product }) => {
     };
 
     useEffect(() => {
-        const tick = setInterval(() =>
-            setRemainingTime(scheduler(new Date(), '2021-11-29T18:35:25.235Z', '2021-11-30T18:35:25.235Z')), 10000)
-        return () => clearInterval(tick);
-    });
-
-    //calculate total time remaining
-    const scheduler = (current, start, end) => {
-        if (new Date(current) <= new Date(start)) {
-            //calculate total time remaining before bidding start
-            let d = (new Date(start)) - (new Date());
-            let weekdays = Math.floor(d / 1000 / 60 / 60 / 24 / 7);
-            let days = Math.floor(d / 1000 / 60 / 60 / 24 - weekdays * 7);
-            let hours = Math.floor(d / 1000 / 60 / 60 - weekdays * 7 * 24 - days * 24);
-            let minutes = Math.floor(d / 1000 / 60 - weekdays * 7 * 24 * 60 - days * 24 * 60 - hours * 60);
-            let seconds = Math.floor(d / 1000 - weekdays * 7 * 24 * 60 * 60 - days * 24 * 60 * 60 - hours * 60 * 60 - minutes * 60);
-
-            let t = `${days} d ${hours} h ${minutes} m ${seconds} s`;
-            return t;
-        } else if (new Date(start) <= new Date(end)) {
-            //calculate total time remaining after bidding start and before and time
-            let d = (new Date(end)) - (new Date(start));
-            let weekdays = Math.floor(d / 1000 / 60 / 60 / 24 / 7);
-            let days = Math.floor(d / 1000 / 60 / 60 / 24 - weekdays * 7);
-            let hours = Math.floor(d / 1000 / 60 / 60 - weekdays * 7 * 24 - days * 24);
-            let minutes = Math.floor(d / 1000 / 60 - weekdays * 7 * 24 * 60 - days * 24 * 60 - hours * 60);
-            let seconds = Math.floor(d / 1000 - weekdays * 7 * 24 * 60 * 60 - days * 24 * 60 * 60 - hours * 60 * 60 - minutes * 60);
-
-            let t = `${days} d ${hours} h ${minutes} m ${seconds} s`;
-            return t;
+        setBidStatusMess(bidStatusMess);
+        if (bidStatusMess === 'BID END') {
+            if (winnerId === yourId) {
+                //addToCart(product.id, 1);
+            }
         } else {
-            // what to do after bidding time end
-            // stop timeing (0:0:0)
-            // duration complete (message from backend)
-            // bid annucement  (topper announcement -> top bidder id -> if(top_bidder_id == your_id) return id, amount)
-            // add to cart
-
-            //won
-            //getwinnerid
-            //match winnerid
-            // if(top_bidder_id == your_id){
-            //     setWinner(data);
-            //     const data = {product_id, your_id, price, date};
-            //     addTocart(data);
-            // }
+            const tick = setInterval(() => {
+                bidstatus(product.id, new Date(), product.startbid, product.endbid)
+                setRemainingTime(timeStatus);
+                setHighestBid(highestbid);
+                setYourBid(yourbid);
+            }, 1000);
+            return () => clearInterval(tick);
         }
-    }
+    }, [bidStatusMess]);
 
     return (
         <Card className={classes.item}>
@@ -107,24 +91,24 @@ const ProductItem = ({ product }) => {
                     <Grid item lg={6} sm={12} xl={6} xs={12}>
                         <Grid container spacing={3}>
                             <Grid item lg={12}>
-                                <div style={{ color: 'green' }}>Bidding is live!!!  </div>
+                                <div style={{ color: 'green' }}> {getBidStatusMess} </div>
                             </Grid>
                             <Grid item lg={12}>
                                 <BidTimeTag
-                                    dateState={new Date('2021-11-26T18:35:25.235Z')}
+                                    dateState={new Date(startbid)}
                                     remainingTime={remainingTime}
                                 />
                             </Grid>
                             <Grid item lg={12}>
                                 <YourBid
-                                    yourBid={"yourBid"}
+                                    yourBid={getYourBid}
                                     isRegister={false}
                                 />
                             </Grid>
                             <Grid item lg={12}>
                                 <BidStatus
-                                    highestBid={"highestBid"}
-                                    startedBid={"startedBid"}
+                                    highestBid={getHighestBid}
+                                    startedBid={price}
                                 />
                             </Grid>
                         </Grid>
@@ -135,4 +119,12 @@ const ProductItem = ({ product }) => {
     );
 };
 
-export default ProductItem;
+const mapStateToProps = state => ({
+    //null 
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    bidstatus: (prodId, current, start, end) => dispatch(bidAction.bidStatus(prodId, current, start, end))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductItem);
