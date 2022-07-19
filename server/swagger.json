@@ -12,7 +12,7 @@
         "description": "Local Server"
       },
       {
-        "url": "https://localhost:5000/api/v1",
+        "url": "https://bidto-api.herokuapp.com/api/v1",
         "description": "Production Server"
       }
     ],
