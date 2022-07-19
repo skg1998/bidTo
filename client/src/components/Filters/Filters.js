@@ -8,7 +8,7 @@ import PriceFilter from './priceFilter';
 
 const Filter = (props) => {
     return (
-        <div>
+        <div style={{ position: 'fixed' }}>
             <Card style={{ margin: '15px', borderRadius: '15px' }}>
                 <CardContent>
                     <h1 style={{ fontFamily: 'bold', fontSize: '30px' }}>Filter</h1>

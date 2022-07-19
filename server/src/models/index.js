@@ -34,6 +34,7 @@ db.Session = require("./session.model")(sequelize, Sequelize);
 db.Role = require('./role.model')(sequelize, Sequelize);
 db.Image = require("./image.model")(sequelize, Sequelize);
 db.SetBid = require("./set_bid")(sequelize, Sequelize);
+db.Winner = require("./winner.model")(sequelize, Sequelize);
 
 db.Role.belongsToMany(db.User, {
     through: "user_roles",

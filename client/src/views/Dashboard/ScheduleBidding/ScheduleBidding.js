@@ -9,7 +9,7 @@ import { connect, useSelector } from 'react-redux'
 import { productAction } from '../../../store/actions'
 
 const ScheduleBidding = (props) => {
-    const { updateProduct, deleteProduct } = props;
+    const { updateProduct, deleteProduct, createProducts } = props;
     const [showForm, setShowForm] = useState(false);
     const onClick = () => setShowForm(!showForm);
 
@@ -20,7 +20,9 @@ const ScheduleBidding = (props) => {
                     <AddCircleOutlineIcon />
                 </Button>
             </div>
-            {showForm ? <ScheduleForm /> : null}
+            {showForm ? <ScheduleForm 
+               createHandler={(product) => createProducts(product)} 
+            /> : null}
             <ScheduleProducts
                 deleteHandler={(product) => deleteProduct(product.id)}
                 updateHandler={(product) => updateProduct(product)}
@@ -35,7 +37,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     updateProduct: (product) => dispatch(productAction.updateProduct(product)),
-    deleteProduct: (product) => dispatch(productAction.deleteProduct(product))
+    deleteProduct: (product) => dispatch(productAction.deleteProduct(product)),
+    createProducts: (product) => dispatch(productAction.createProducts(product))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScheduleBidding);
