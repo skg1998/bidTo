@@ -21,10 +21,10 @@ By using this application users: -
 
 
 ## First Release 
-> [Backend-Api Doc](https://github.com/skg1998/bidTo/tree/master/server)
+> [Backend-Api Doc](https://github.com/skg1998/bidTo/tree/master/server)\
 > Under Process [backend-api](https://bidto-api.herokuapp.com/api-docs/)  
 
-> [Frontend Doc](https://github.com/skg1998/bidTo/tree/master/client)
+> [Frontend Doc](https://github.com/skg1998/bidTo/tree/master/client)\
 > Under Process [Frontend](https://bidto-frontend.herokuapp.com/)
 
 ## Usage
