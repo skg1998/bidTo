@@ -57,21 +57,14 @@ const BidHistory = (props) => {
             </Box>
             <CardContent style={{ maxHeight: 300, overflow: 'auto', width: '100%' }}>
                 <Grid container spacing={3}>
-                    {bidHistory.map((bidder, idx) => (
-                        <Grid item lg={12}>
+                    <Grid item lg={12}>
+                        {bidHistory.map((bidder, idx) => (
                             <Box display="flex" p={1} bgcolor="background.paper" key={idx}>
-                                <Box p={1} bgcolor="grey.300">
-                                    {bidder.id}
-                                </Box>
-                                <Box p={1} flexGrow={1} bgcolor="grey.300">
-                                    {bidder.bidername}
-                                </Box>
-                                <Box p={1} bgcolor="grey.300">
-                                    {bidder.amount}
-                                </Box>
+                                <div><i style={{ color: 'red' }}><b>{bidder.bidername}</b></i> new bid is <i style={{ color: 'red' }}><b>{bidder.amount}</b></i> !</div>
                             </Box>
-                        </Grid>
-                    ))}
+
+                        ))}
+                    </Grid>
                 </Grid>
             </CardContent>
         </Card>

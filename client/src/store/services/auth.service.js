@@ -21,12 +21,12 @@ const register = (username, email, password) => {
     return axios(configs);
 };
 
-const login = (username, password) => {
+const login = (email, password) => {
     const configs = {
         method: 'post',
         url: BASE_URL + BASE_PATH + "users/signin",
         headers: { 'Content-Type': 'application/json' },
-        data: { username, password }
+        data: { email, password }
     };
 
     return axios(configs);

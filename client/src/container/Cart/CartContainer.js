@@ -37,18 +37,18 @@ class CartContainer extends Component {
 
     render() {
         const { totalItems, cartItems, totalPrice, removeFromCart, changeQty } = this.props
-        console.log("totalItems", totalItems, cartItems)
         return (
-            <div>
-                {totalItems ? <Cart
-                    products={cartItems}
-                    total={totalPrice}
-                    changeQty={(productId, val) => changeQty(productId, val)}
-                    removeFromCart={(productId) => removeFromCart(productId)}
-                    chekcoutDialog={this.state.open}
-                    handleCheckoutSubmit={this.handleCheckoutSubmit}
-                    handleCheckoutDialog={this.handleOpenDialog}
-                /> : <Empty />
+            <div style={{ padding: '25px', marginTop: '70px' }}>
+                {totalItems ?
+                    <Cart
+                        products={cartItems}
+                        total={totalPrice}
+                        changeQty={(productId, val) => changeQty(productId, val)}
+                        removeFromCart={(productId) => removeFromCart(productId)}
+                        chekcoutDialog={this.state.open}
+                        handleCheckoutSubmit={this.handleCheckoutSubmit}
+                        handleCheckoutDialog={this.handleOpenDialog}
+                    /> : <Empty title={"Cart"} />
                 }
             </div>
         )

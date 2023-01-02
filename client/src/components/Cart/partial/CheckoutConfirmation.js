@@ -29,14 +29,13 @@ const CheckoutConfirmation = ({ chekcoutDialog, handleCheckoutDialog, handleChec
             {
                 products && products.map(product => (
                     <div key={product.id}>
-                        <Typography> <b>Brand:</b> {product.title}</Typography>
-                        <Typography><b>Price:</b> Rp {product.price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Typography>
-                        <Typography><b>Quantity:</b> {product.quantity}</Typography>
+                        <Typography> <b>Product Name:</b> {product.name}</Typography>
+                        <Typography><b>Price:</b> {product.price}</Typography>
                         <br />
                     </div>
                 ))
             }
-            <Typography variant="body2" style={{ fontWeight: 500, fontSize: '1.2rem' }}>Total: Rp {total}</Typography>
+            <Typography variant="body2" style={{ fontWeight: 500, fontSize: '1.2rem' }}>Total: {total}</Typography>
         </DialogContent>
         <DialogActions>
             <Button onClick={handleCheckoutDialog} color="primary">

@@ -30,7 +30,7 @@ const useStyle = makeStyles((theme) => ({
 
 }));
 const ProductItem = ({ product, bidstatus }) => {
-    const { id, image, name, startbid, endbid, price } = product;
+    const { id, image, name, startbid, endbid, price, auth } = product;
     const classes = useStyle();
     const [productId, serProductId] = useState();
     const [remainingTime, setRemainingTime] = useState();
@@ -51,6 +51,8 @@ const ProductItem = ({ product, bidstatus }) => {
         serProductId(id)
         productId && history.push(generatePath("/product/:id", { id }));
     };
+
+    console.log("auth......", auth);
 
     useEffect(() => {
         setBidStatusMess(bidStatusMess);
@@ -78,6 +80,7 @@ const ProductItem = ({ product, bidstatus }) => {
                             <Grid item lg={6} sm={12} xl={6} xs={12}> <div style={{ fontSize: '30px' }}>{name}</div></Grid>
                             <Grid item lg={6} sm={12} xl={6} xs={12}>
                                 <Button
+                                    disabled={!(auth == undefined || auth == false)}
                                     className={classes.button}
                                     variant="outlined"
                                     onClick={(e) => { handleProceed(id) }}
@@ -120,7 +123,7 @@ const ProductItem = ({ product, bidstatus }) => {
 };
 
 const mapStateToProps = state => ({
-    //null 
+    auth: state.authReducer.login.isLogin,
 });
 
 const mapDispatchToProps = (dispatch) => ({

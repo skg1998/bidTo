@@ -42,17 +42,18 @@ const register = (username, email, password) => (dispatch) => {
         })
 };
 
-const login = (username, password) => (dispatch) => {
+const login = (email, password) => (dispatch) => {
     dispatch({ type: USER_LOGGING_IN })
-    return authServices.login(username, password)
+    return authServices.login(email, password)
         .then(res => {
-            //history.push('/dashboard/profile');
+            history.push('/home');
             //window.location.reload(true)
             localStorage.setItem('user', JSON.stringify(res.data))
             dispatch({ type: USER_LOGGED_IN, payload: res.data })
         })
         .catch(error => {
             dispatch({ type: USER_LOGGING_ERROR, message: error.response.data })
+
         })
 };
 

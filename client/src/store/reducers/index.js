@@ -24,9 +24,10 @@ export default Reducer;
 const parseToInt = str => parseInt(str.split(',').join(''))
 
 //total price of individual product -> (product X it's quantity)
-export const getTotalItemPrice = (state, id) =>
-    fromCart.getQuantity(state.cart, id) *
-    parseToInt(fromProducts.getProduct(state.products, id).offerPrice)
+export const getTotalItemPrice = (state, id) => {
+    //return fromCart.getQuantity(state.cart, id) * parseToInt(fromProducts.getProduct(state.products, id).price)
+    return 500;//parseToInt(fromProducts.getProduct(state.products, id).price)
+}
 
 //total price of all items, final payable amount
 export const getTotalPrice = (state) =>

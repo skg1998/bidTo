@@ -48,6 +48,7 @@ const ScheduleForm = (props) => {
         let formData = new FormData();
         formData.append("name", name);
         formData.append("desc", desc);
+        formData.append("location", location);
         formData.append("price", price);
         formData.append("category", category);
         formData.append("startBidding", startBidding);

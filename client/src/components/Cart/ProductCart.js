@@ -18,7 +18,7 @@ const Styles = theme => ({
     avatar: { backgroundColor: 'red' },
 })
 
-const ProductCart = ({ price, quantity, title, inventory, img, onRemoveFromCartClicked, onQtySelected, classes }) => {
+const ProductCart = ({ price, title, img, onRemoveFromCartClicked, classes }) => {
     return (
         <Card className={classes.card}>
             <CardHeader
@@ -41,17 +41,6 @@ const ProductCart = ({ price, quantity, title, inventory, img, onRemoveFromCartC
             />
             <CardContent className="rightBox">
                 <Typography component="p">{`Price: Rp ${price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}`}</Typography>
-                <FormControl>
-                    <InputLabel>Quantity</InputLabel>
-                    <Select
-                        value={quantity}
-                        onChange={(e, val) => onQtySelected(e.target.value)}
-                    >
-
-                        {[...Array(inventory + quantity).keys()].map(num => <MenuItem key={num + 1} value={num + 1}>{num + 1}</MenuItem>)}
-                    </Select>
-                    <FormHelperText>Choose how many items you want to buy</FormHelperText>
-                </FormControl>
             </CardContent>
         </Card>
     )

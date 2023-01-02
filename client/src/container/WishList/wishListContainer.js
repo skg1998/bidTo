@@ -9,12 +9,12 @@ class WishListContainer extends Component {
     render() {
         const { wishlistItems, removeFromWishlist } = this.props
         return (
-            <div>
+            <div style={{ padding: '25px', marginTop: '70px' }}>
                 {wishlistItems.length > 0 ?
                     <WishList
                         products={wishlistItems}
                         removeFromWishlist={(productId) => removeFromWishlist(productId)}
-                    /> : <Empty />
+                    /> : <Empty title={"Wishlist"} />
                 }
             </div>
         )
