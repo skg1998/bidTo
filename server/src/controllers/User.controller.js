@@ -27,15 +27,16 @@ exports.create = async (req, res, next) => {
  */
 exports.login = async (req, res, next) => {
     try {
+        console.log("req.body............", req.body);
         const { email, password } = req.body;
-
         //Validate email & password
         if (!email && !password) {
             return next(new ErrorResponse('Please Provide an email and password', 400))
         }
 
         // Check for user
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({ where: { email } });
+
         if (!user) {
             return next(new ErrorResponse('Invalid credentials User not found', 401));
         }

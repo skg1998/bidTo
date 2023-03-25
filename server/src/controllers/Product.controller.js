@@ -9,7 +9,7 @@ const Cloudnary = require('../util/cloudnary');
  * @access Public
  */
 exports.create = async (req, res, next) => {
-    console.log("User", req.user);
+    console.log("User", req.user, req.body);
 
     try {
         if (!req.file) {
@@ -26,9 +26,9 @@ exports.create = async (req, res, next) => {
             desc: req.body.desc,
             price: req.body.price,
             location: req.body.location,
-            category_id: req.body.category_id,
-            startbid: req.body.startbid,
-            endbid: req.body.endbid,
+            category_id: req.body.category,
+            startbid: req.body.startBidding,
+            endbid: req.body.endBidding,
             adminid: req.user.id
         })
 

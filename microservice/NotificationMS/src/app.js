@@ -10,11 +10,6 @@ const compression = require('compression');
 const db = require('./models');
 const errorHandler = require('./middleware/error');
 
-//Swagger
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
-const SwaggerOptions = require('../swagger.json');
-const swaggerDocument = swaggerJsDoc(SwaggerOptions);
 
 // Routes File
 const IndexRoutes = require('./routes/index.routes');
@@ -33,7 +28,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //all API
 app.use('/', IndexRoutes);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(errorHandler);
 

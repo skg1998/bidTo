@@ -17,10 +17,10 @@ module.exports = (sequelize, DataTypes) => {
         image: { type: DataTypes.STRING },
         category_id: { type: DataTypes.UUID },
         startbid: { type: DataTypes.DATE },
-        endbid: { type: DataTypes.DATE }
+        endbid: { type: DataTypes.DATE },
     }, {});
     Product.associate = function (models) {
-        // associations can be defined here
+        // associations can be defined here 
     };
     return Product;
 };

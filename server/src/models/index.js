@@ -33,8 +33,17 @@ db.Category = require("./category.model")(sequelize, Sequelize);
 db.Session = require("./session.model")(sequelize, Sequelize);
 db.Role = require('./role.model')(sequelize, Sequelize);
 db.Image = require("./image.model")(sequelize, Sequelize);
-db.SetBid = require("./set_bid")(sequelize, Sequelize);
+db.Bid = require("./bid.model")(sequelize, Sequelize);
 db.Winner = require("./winner.model")(sequelize, Sequelize);
+db.Order = require('./order.model')(sequelize, Sequelize);
+
+// Define the relationships between Product and Bid
+db.Product.hasMany(db.Bid);
+db.Bid.belongsTo(db.Product);
+
+// Define the relationships between User and Bid
+db.User.hasMany(db.Bid);
+db.Bid.belongsTo(db.User);
 
 db.Role.belongsToMany(db.User, {
     through: "user_roles",

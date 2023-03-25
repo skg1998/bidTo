@@ -15,7 +15,15 @@ module.exports = (sequelize, DataTypes) => {
             type: STRING
         },
         email: {
-            type: STRING
+            type: STRING,
+            allowNull: false,
+            validate: {
+                isEmail: true
+            },
+            unique: {
+                args: true,
+                msg: 'Email address already in use!'
+            }
         },
         image: { type: STRING },
         gender: {
